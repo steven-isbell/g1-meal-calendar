@@ -10,12 +10,15 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
     "material-ui": "^0.20.0",
+    "moment": "^2.21.0",
     "pg": "^7.4.1",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-big-calendar": "^0.18.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "styled-components": "^3.2.0"
   },
   "scripts": {
     "start": "concurrently --kill-others \"nodemon server/\" \"react-scripts start\"",

@@ -1,6 +1,8 @@
 CREATE TABLE events (
     id SERIAL PRIMARY KEY,
-    date TIMESTAMP NOT NULL,
-    host VARCHAR(55) NOT NULL,
-    meal_desc text
+    start_time TIMESTAMP NOT NULL,
+    end_time VARCHAR(55) NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    meal_desc TEXT,
+    allday BOOLEAN
 )
