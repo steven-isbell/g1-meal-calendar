@@ -1,8 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import "./index.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import App from "./components/App";
+import registerServiceWorker from "./registerServiceWorker";
+
+ReactDOM.render(
+  <MuiThemeProvider>
+    <App />
+  </MuiThemeProvider>,
+  document.getElementById("root")
+);
 registerServiceWorker();
