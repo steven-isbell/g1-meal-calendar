@@ -6,6 +6,10 @@ import styled from "styled-components";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
+import Snackbar from "material-ui/Snackbar";
+
+import Instructions from "../Instructions/Instructions";
+import RefreshIndicator from "material-ui/RefreshIndicator";
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -40,17 +44,30 @@ class Calendar extends Component {
       selectedDate: {},
       selectedEvent: {},
       title: "",
-      desc: ""
+      desc: "",
+      loading: false,
+      snackMessage: "",
+      openSnack: false
     };
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
+    this.handleEventCancel = this.handleEventCancel.bind(this);
   }
   async componentDidMount() {
     try {
-      const res = await axios("/api/getEvents");
+      const res = await axios("/api/events");
       this.setState({ events: res.data });
     } catch (err) {
       console.error(err);
     }
+  }
+  async handleEventCancel() {
+    const res = await axios.delete(`/api/event/${this.state.selectedEvent.id}`);
+    this.setState({
+      events: res.data,
+      editEvent: !this.state.editEvent,
+      openSnack: !this.openSnack,
+      snackMessage: "Cancellation Successful"
+    });
   }
   handleEventSelect(event) {
     console.log(event);
@@ -61,7 +78,7 @@ class Calendar extends Component {
     const meal_desc = document.getElementById("desc-input").value;
     const { start, end } = this.state.selectedDate;
 
-    const res = await axios.post("/api/addEvent", {
+    const res = await axios.post("/api/events", {
       title,
       meal_desc,
       start,
@@ -75,10 +92,20 @@ class Calendar extends Component {
     this.setState({ open: !this.state.open, selectedDate: info });
   }
   render() {
-    const { open, editEvent, selectedEvent, events, edit } = this.state;
+    const {
+      open,
+      editEvent,
+      selectedEvent,
+      events,
+      edit,
+      openSnack,
+      snackMessage,
+      loading
+    } = this.state;
+
     const actions = [
       <FlatButton
-        label="Cancel"
+        label="NeverMind"
         primary={true}
         onClick={() => this.setState({ open: !open })}
       />,
@@ -88,18 +115,25 @@ class Calendar extends Component {
         onClick={this.handleEventSubmit}
       />
     ];
+
     const editActions = [
       <FlatButton
-        label="Cancel"
+        label="NeverMind"
         primary={true}
         onClick={() => this.setState({ editEvent: !editEvent })}
       />,
       <FlatButton
-        label="Edit Event"
+        label="Cancel Meal"
+        primary={true}
+        onClick={this.handleEventCancel}
+      />,
+      <FlatButton
+        label="Edit Meal"
         primary={true}
         onClick={() => this.setState({ edit: !edit })}
       />
     ];
+
     return (
       <Fragment>
         <Title>G1 Missionary Meal Calendar</Title>
@@ -135,6 +169,15 @@ class Calendar extends Component {
               id="desc-input"
             />
           </InputContainer>
+          {loading && (
+            <RefreshIndicator
+              size={40}
+              left={10}
+              top={0}
+              status="loading"
+              style={{ position: "relative" }}
+            />
+          )}
         </Dialog>
         <Dialog
           title="Meal Information"
@@ -152,8 +195,15 @@ class Calendar extends Component {
                 : selectedEvent.title}
             </p>
           )}
-          <p>{selectedEvent.desc}</p>
+          <p>They left the following instructions: {selectedEvent.desc}</p>
         </Dialog>
+        <Snackbar
+          open={openSnack}
+          message={snackMessage}
+          autoHideDuration={3000}
+          onRequestClose={() => this.setState({ openSnack: !openSnack })}
+        />
+        <Instructions />
       </Fragment>
     );
   }
