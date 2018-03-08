@@ -35,7 +35,10 @@ class Calendar extends Component {
     this.state = {
       events: [],
       open: false,
+      editEvent: false,
+      edit: false,
       selectedDate: {},
+      selectedEvent: {},
       title: "",
       desc: ""
     };
@@ -50,7 +53,8 @@ class Calendar extends Component {
     }
   }
   handleEventSelect(event) {
-    console.log("FIRST", event);
+    console.log(event);
+    this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
   }
   async handleEventSubmit() {
     const title = document.getElementById("title-input").value;
@@ -65,16 +69,18 @@ class Calendar extends Component {
     });
     this.setState({ events: res.data, open: !this.state.open });
   }
+  handleEventEdit() {}
   handleSlotSelect(info) {
     console.log(info);
     this.setState({ open: !this.state.open, selectedDate: info });
   }
   render() {
+    const { open, editEvent, selectedEvent, events, edit } = this.state;
     const actions = [
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={() => this.setState({ open: !this.state.open })}
+        onClick={() => this.setState({ open: !open })}
       />,
       <FlatButton
         label="Submit"
@@ -82,12 +88,24 @@ class Calendar extends Component {
         onClick={this.handleEventSubmit}
       />
     ];
+    const editActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={() => this.setState({ editEvent: !editEvent })}
+      />,
+      <FlatButton
+        label="Edit Event"
+        primary={true}
+        onClick={() => this.setState({ edit: !edit })}
+      />
+    ];
     return (
       <Fragment>
         <Title>G1 Missionary Meal Calendar</Title>
         <CalendarContainer>
           <BigCalendar
-            events={this.state.events}
+            events={events}
             selectable
             onSelectEvent={e => this.handleEventSelect(e)}
             onSelectSlot={info => this.handleSlotSelect(info)}
@@ -100,7 +118,7 @@ class Calendar extends Component {
           title="Enter Information"
           actions={actions}
           modal={true}
-          open={this.state.open}
+          open={open}
         >
           <InputContainer>
             <TextField
@@ -117,6 +135,24 @@ class Calendar extends Component {
               id="desc-input"
             />
           </InputContainer>
+        </Dialog>
+        <Dialog
+          title="Meal Information"
+          actions={editActions}
+          modal={true}
+          open={editEvent}
+        >
+          {selectedEvent.title && (
+            <p>
+              Dinner will be provided by{" "}
+              {selectedEvent.title.endsWith("'s") ||
+              selectedEvent.title.endsWith("s'") ||
+              selectedEvent.title.endsWith("es")
+                ? `the ${selectedEvent.title}`
+                : selectedEvent.title}
+            </p>
+          )}
+          <p>{selectedEvent.desc}</p>
         </Dialog>
       </Fragment>
     );

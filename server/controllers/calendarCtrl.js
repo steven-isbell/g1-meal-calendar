@@ -29,15 +29,15 @@ const getEvents = async (req, res) => {
 };
 
 const addEvent = async (req, res) => {
-  console.log("BODY: ", req.body);
   const { start, end, title, meal_desc } = req.body;
-  // const formattedStart = moment.format(start_time);
-  // const formattedEnd = moment.format(end_time);
+  const formattedTitle = title.toLowerCase().startsWith("the ")
+    ? title.replace(/the\s/gi, "")
+    : title;
   const client = await pool.connect();
   try {
     await client.query(
       "INSERT INTO events (start_time, end_time, title, meal_desc, allday) VALUES ($1, $2, $3, $4, true)",
-      [start, end, title, meal_desc]
+      [start, end, formattedTitle, meal_desc]
     );
     getEvents(req, res);
   } catch (e) {

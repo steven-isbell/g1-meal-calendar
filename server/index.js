@@ -18,10 +18,6 @@ const app = express();
 app.use(cors());
 app.use(json());
 
-app.use((req, res, next) => {
-  console.log("ENTER");
-  next();
-});
 app.get("/api/getEvents", getEvents);
 app.post("/api/addEvent", addEvent);
 
