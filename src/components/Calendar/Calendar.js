@@ -9,7 +9,6 @@ import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
 
 import Instructions from "../Instructions/Instructions";
-import RefreshIndicator from "material-ui/RefreshIndicator";
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -51,6 +50,7 @@ class Calendar extends Component {
     };
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.handleEventCancel = this.handleEventCancel.bind(this);
+    this.handleEventEdit = this.handleEventEdit.bind(this);
   }
   async componentDidMount() {
     try {
@@ -73,6 +73,29 @@ class Calendar extends Component {
     console.log(event);
     this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
   }
+  async handleEventEdit() {
+    console.log(document.getElementById("title-input").value);
+    const title =
+      document.getElementById("title-input").value ||
+      this.state.selectedEvent.title;
+    const meal_desc =
+      document.getElementById("desc-input").value ||
+      this.state.selectedEvent.desc;
+
+    console.log(title, meal_desc);
+
+    // const res = await axios.patch(`/api/event/${this.state.selectedEvent.id}`, {
+    //   title,
+    //   meal_desc
+    // });
+
+    // this.setState({
+    //   edit: !this.state.edit,
+    //   events: res.data,
+    //   openSnack: !this.state.openSnack,
+    //   snackMessage: "Event Successfully Updated"
+    // });
+  }
   async handleEventSubmit() {
     const title = document.getElementById("title-input").value;
     const meal_desc = document.getElementById("desc-input").value;
@@ -86,7 +109,6 @@ class Calendar extends Component {
     });
     this.setState({ events: res.data, open: !this.state.open });
   }
-  handleEventEdit() {}
   handleSlotSelect(info) {
     console.log(info);
     this.setState({ open: !this.state.open, selectedDate: info });
@@ -99,8 +121,7 @@ class Calendar extends Component {
       events,
       edit,
       openSnack,
-      snackMessage,
-      loading
+      snackMessage
     } = this.state;
 
     const actions = [
@@ -134,6 +155,44 @@ class Calendar extends Component {
       />
     ];
 
+    const editCompActions = [
+      <FlatButton
+        label="NeverMind"
+        primary={true}
+        onClick={() => this.setState({ editEvent: !editEvent, edit: !edit })}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        onClick={this.handleEventEdit}
+      />
+    ];
+
+    const inputDialog = (
+      <Dialog
+        title="Enter Information"
+        actions={edit ? editCompActions : actions}
+        modal={true}
+        open={edit ? edit : open}
+      >
+        <InputContainer>
+          <TextField
+            style={{ width: "50%" }}
+            hintText="Your Name"
+            id="title-input"
+          />
+          <TextField
+            style={{ width: "50%" }}
+            hintText="Instructions, directions, time, etc."
+            floatingLabelText="Dinner Information"
+            floatingLabelFixed={true}
+            multiLine
+            id="desc-input"
+          />
+        </InputContainer>
+      </Dialog>
+    );
+
     return (
       <Fragment>
         <Title>G1 Missionary Meal Calendar</Title>
@@ -148,55 +207,29 @@ class Calendar extends Component {
             style={{ height: "50vh" }}
           />
         </CalendarContainer>
-        <Dialog
-          title="Enter Information"
-          actions={actions}
-          modal={true}
-          open={open}
-        >
-          <InputContainer>
-            <TextField
-              style={{ width: "50%" }}
-              hintText="Your Name"
-              id="title-input"
-            />
-            <TextField
-              style={{ width: "50%" }}
-              hintText="Instructions, directions, time, etc."
-              floatingLabelText="Dinner Information"
-              floatingLabelFixed={true}
-              multiLine
-              id="desc-input"
-            />
-          </InputContainer>
-          {loading && (
-            <RefreshIndicator
-              size={40}
-              left={10}
-              top={0}
-              status="loading"
-              style={{ position: "relative" }}
-            />
-          )}
-        </Dialog>
-        <Dialog
-          title="Meal Information"
-          actions={editActions}
-          modal={true}
-          open={editEvent}
-        >
-          {selectedEvent.title && (
-            <p>
-              Dinner will be provided by{" "}
-              {selectedEvent.title.endsWith("'s") ||
-              selectedEvent.title.endsWith("s'") ||
-              selectedEvent.title.endsWith("es")
-                ? `the ${selectedEvent.title}`
-                : selectedEvent.title}
-            </p>
-          )}
-          <p>They left the following instructions: {selectedEvent.desc}</p>
-        </Dialog>
+        {inputDialog}
+        {!edit ? (
+          <Dialog
+            title="Meal Information"
+            actions={editActions}
+            modal={true}
+            open={editEvent}
+          >
+            {selectedEvent.title && (
+              <p>
+                Dinner will be provided by{" "}
+                {selectedEvent.title.endsWith("'s") ||
+                selectedEvent.title.endsWith("s'") ||
+                selectedEvent.title.endsWith("es")
+                  ? `the ${selectedEvent.title}`
+                  : selectedEvent.title}
+              </p>
+            )}
+            <p>They left the following instructions: {selectedEvent.desc}</p>
+          </Dialog>
+        ) : (
+          inputDialog
+        )}
         <Snackbar
           open={openSnack}
           message={snackMessage}

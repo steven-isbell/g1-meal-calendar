@@ -50,6 +50,7 @@ const addEvent = async (req, res) => {
 const deleteEvent = async (req, res) => {
   const { id } = req.params;
   const client = await pool.connect();
+
   try {
     await client.query("DELETE FROM events WHERE id = $1;", [id]);
     getEvents(req, res);
@@ -60,8 +61,29 @@ const deleteEvent = async (req, res) => {
   }
 };
 
+const updateEvent = async (req, res) => {
+  const { id } = req.params;
+  const { meal_desc, title } = req.body;
+  console.log(id, meal_desc, title);
+  const client = await pool.connect();
+
+  try {
+    await client.query(
+      "UPDATE events SET title = $1 AND meal_desc = $2 WHERE id = $3;",
+      [title, meal_desc, id]
+    );
+    getEvents(req, res);
+  } catch (e) {
+    console.log("ERROR!! ", e);
+    res.status(500).json(e);
+  } finally {
+    client.release();
+  }
+};
+
 module.exports = {
   getEvents,
   addEvent,
-  deleteEvent
+  deleteEvent,
+  updateEvent
 };

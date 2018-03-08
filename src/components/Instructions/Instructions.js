@@ -48,7 +48,7 @@ const Instructions = () => (
   <FlexedContainer>
     <ul>
       {legend.map((val, idx) => (
-        <Fragment>
+        <Fragment key={`${val}${idx}`}>
           <ListTitle>{val.title}</ListTitle>
           {val.actions.map(item => (
             <ListItem key={`${item}${idx}`}>{item}</ListItem>
