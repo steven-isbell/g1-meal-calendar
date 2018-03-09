@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start-dev":
-      "concurrently --kill-others \"nodemon server/\" \"react-scripts start\"",
+      "NODE_ENV=development concurrently --kill-others \"nodemon server/\" \"react-scripts start\"",
     "start-prod": "nodemon server/",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
