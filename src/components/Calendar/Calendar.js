@@ -129,6 +129,14 @@ class Calendar extends Component {
     });
   }
   handleSlotSelect(info) {
+    const isBefore = moment(info.start).isBefore(new Date());
+    if (isBefore) {
+      this.setState({
+        openSnack: true,
+        snackMessage: "This Day Has Passed"
+      });
+      return;
+    }
     const exists = this.state.events.findIndex(event =>
       moment(info.start).isSame(event.start)
     );

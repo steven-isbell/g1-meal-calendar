@@ -5,7 +5,6 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import "./index.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import App from "./components/App";
-import registerServiceWorker from "./registerServiceWorker";
 
 ReactDOM.render(
   <MuiThemeProvider>
@@ -13,4 +12,3 @@ ReactDOM.render(
   </MuiThemeProvider>,
   document.getElementById("root")
 );
-registerServiceWorker();
