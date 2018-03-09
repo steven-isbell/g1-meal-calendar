@@ -5,3 +5,43 @@
 .rbc-date-cell > a {
   pointer-events: none;
 }
+
+#instructions {
+  padding: 0px;
+}
+
+.sad-missionaries {
+  height: 250px;
+  width: 500px;
+}
+
+.rbc-toolbar .rbc-toolbar-label {
+  padding: 0 100px 0 0px;
+}
+
+@media (max-width: 768px) {
+  .rbc-calendar {
+    width: 350px !important;
+  }
+  .rbc-btn-group {
+    display: flex;
+    flex-direction: column;
+  }
+  .rbc-btn-group button {
+    border-radius: 0px;
+  }
+  #instructions {
+    font-size: 14px;
+    padding: 5px;
+  }
+  .modal button {
+    height: 25px;
+    width: 75px;
+  }
+  .sad-missionaries {
+    width: 250px;
+  }
+  .rbc-toolbar .rbc-toolbar-label {
+    padding: 0 10px;
+  }
+}

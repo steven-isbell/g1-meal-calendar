@@ -15,16 +15,16 @@ const port = process.env.PORT || 3001;
 
 const app = express();
 
-// app.use(express.static(`${__dirname}/../build/index.html`));
+// app.use(express.static(`${__dirname}/../../build/index.html`));
 
 app.use(cors());
 app.use(json());
 
-app.use((req, res, next) => {
-  console.log("REQ.BODY: ", req.body);
-  console.log("REQ.QUERY: ", req.query);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("REQ.BODY: ", req.body);
+//   console.log("REQ.QUERY: ", req.query);
+//   next();
+// });
 
 app.get("/api/events", getEvents);
 app.post("/api/events", addEvent);

@@ -46,7 +46,7 @@ const legend = [
 ];
 const Instructions = () => (
   <FlexedContainer>
-    <ul>
+    <ul id="instructions">
       {legend.map((val, idx) => (
         <Fragment key={`${val}${idx}`}>
           <ListTitle>{val.title}</ListTitle>

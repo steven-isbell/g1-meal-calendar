@@ -46,7 +46,8 @@ class Calendar extends Component {
       desc: "",
       loading: false,
       snackMessage: "",
-      openSnack: false
+      openSnack: false,
+      cancellation: false
     };
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.handleEventCancel = this.handleEventCancel.bind(this);
@@ -62,7 +63,7 @@ class Calendar extends Component {
           : (button.style.borderRadius = "5px")
     );
     buttons[0].childNodes[0].click();
-    buttons[0].childNodes[1].innerText = "previous";
+    buttons[0].childNodes[1].innerText = "prev";
     try {
       const res = await axios("/api/events");
       this.setState({ events: res.data });
@@ -74,14 +75,14 @@ class Calendar extends Component {
     const res = await axios.delete(`/api/event/${this.state.selectedEvent.id}`);
     this.setState({
       events: res.data,
-      editEvent: !this.state.editEvent,
-      openSnack: !this.openSnack,
+      cancellation: !this.state.cancellation,
+      openSnack: !this.state.openSnack,
       snackMessage: "Cancellation Successful"
     });
   }
   handleEventSelect(event) {
-    console.log(event);
     this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
+    // console.log(moment().diff(this.state.selectedEvent.start, "h"));
   }
   async handleEventEdit() {
     const {
@@ -148,12 +149,13 @@ class Calendar extends Component {
       events,
       edit,
       openSnack,
-      snackMessage
+      snackMessage,
+      cancellation
     } = this.state;
 
     const actions = [
       <FlatButton
-        label="NeverMind"
+        label="Exit"
         primary={true}
         onClick={() => this.setState({ open: !open })}
       />,
@@ -166,14 +168,21 @@ class Calendar extends Component {
 
     const editActions = [
       <FlatButton
-        label="NeverMind"
+        label="Exit"
         primary={true}
-        onClick={() => this.setState({ editEvent: !editEvent })}
+        onClick={() =>
+          this.setState({ editEvent: !editEvent, selectedEvent: {} })
+        }
       />,
       <FlatButton
         label="Cancel Meal"
-        primary={true}
-        onClick={this.handleEventCancel}
+        secondary={true}
+        onClick={() =>
+          this.setState({
+            editEvent: !editEvent,
+            cancellation: !cancellation
+          })
+        }
       />,
       <FlatButton
         label="Edit Meal"
@@ -184,14 +193,38 @@ class Calendar extends Component {
 
     const editCompActions = [
       <FlatButton
-        label="NeverMind"
+        label="Exit"
         primary={true}
-        onClick={() => this.setState({ editEvent: !editEvent, edit: !edit })}
+        onClick={() =>
+          this.setState({
+            editEvent: !editEvent,
+            edit: !edit,
+            selectedEvent: {}
+          })
+        }
       />,
       <FlatButton
         label="Submit"
         primary={true}
         onClick={this.handleEventEdit}
+      />
+    ];
+
+    const cancelActions = [
+      <FlatButton
+        label="No"
+        primary={true}
+        onClick={() =>
+          this.setState({
+            cancellation: !cancellation,
+            selectedEvent: {}
+          })
+        }
+      />,
+      <FlatButton
+        label="Yes"
+        secondary={true}
+        onClick={this.handleEventCancel}
       />
     ];
 
@@ -201,6 +234,7 @@ class Calendar extends Component {
         actions={edit ? editCompActions : actions}
         modal={true}
         open={edit ? edit : open}
+        className="modal"
       >
         <InputContainer>
           <TextField
@@ -213,8 +247,8 @@ class Calendar extends Component {
           />
           <TextField
             style={{ width: "50%" }}
-            hintText="Instructions, directions, time, etc."
-            floatingLabelText="Dinner Information"
+            hintText="Time, Place, Etc."
+            floatingLabelText="Information"
             floatingLabelFixed={true}
             multiLine
             id="desc-input"
@@ -236,6 +270,7 @@ class Calendar extends Component {
             onSelecting={e => this.handleSelecting(e)}
             popup
             style={{ height: "50vh", width: "90vw", margin: "0 auto" }}
+            id="calendar"
           />
         </CalendarContainer>
         {inputDialog}
@@ -245,6 +280,7 @@ class Calendar extends Component {
             actions={editActions}
             modal={true}
             open={editEvent}
+            className="modal"
           >
             {selectedEvent.title && (
               <p>
@@ -261,6 +297,30 @@ class Calendar extends Component {
         ) : (
           inputDialog
         )}
+        <Dialog
+          title="Are You Sure?"
+          open={cancellation}
+          actions={cancelActions}
+          modal={true}
+          className="modal"
+        >
+          <div className="flex">
+            <img
+              src="https://i.pinimg.com/originals/81/b9/da/81b9dacab519f1dd3e5ba73d31a04ea8.jpg"
+              alt="missionaries"
+              className="sad-missionaries"
+            />
+            <p>A Hungry Missionary Is A Sad Missionary</p>
+            {moment(new Date())
+              .add(24, "hours")
+              .isAfter(selectedEvent.start) && (
+              <p>
+                It is less than 24 hours until this appointment; if cancelling,
+                please inform the missionaries or WML.
+              </p>
+            )}
+          </div>
+        </Dialog>
         <Snackbar
           open={openSnack}
           message={snackMessage}
