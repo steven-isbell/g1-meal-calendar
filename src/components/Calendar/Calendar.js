@@ -42,7 +42,7 @@ class Calendar extends Component {
       edit: false,
       selectedDate: {},
       selectedEvent: {},
-      title: "",
+      meal_title: "",
       desc: "",
       loading: false,
       snackMessage: "",
@@ -53,6 +53,16 @@ class Calendar extends Component {
     this.handleEventEdit = this.handleEventEdit.bind(this);
   }
   async componentDidMount() {
+    const buttons = document.querySelectorAll(".rbc-btn-group");
+    const buttonsToRemove = buttons[1].childNodes;
+    buttonsToRemove.forEach(
+      (button, idx) =>
+        idx
+          ? (button.style.display = "none")
+          : (button.style.borderRadius = "5px")
+    );
+    buttons[0].childNodes[0].click();
+    buttons[0].childNodes[1].innerText = "previous";
     try {
       const res = await axios("/api/events");
       this.setState({ events: res.data });
@@ -74,27 +84,30 @@ class Calendar extends Component {
     this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
   }
   async handleEventEdit() {
-    console.log(document.getElementById("title-input").value);
-    const title =
-      document.getElementById("title-input").value ||
-      this.state.selectedEvent.title;
-    const meal_desc =
-      document.getElementById("desc-input").value ||
-      this.state.selectedEvent.desc;
+    const {
+      meal_title,
+      desc,
+      selectedEvent,
+      edit,
+      openSnack,
+      editEvent
+    } = this.state;
 
-    console.log(title, meal_desc);
+    const title = meal_title || selectedEvent.title;
+    const meal_desc = desc || selectedEvent.desc;
 
-    // const res = await axios.patch(`/api/event/${this.state.selectedEvent.id}`, {
-    //   title,
-    //   meal_desc
-    // });
+    const res = await axios.patch(`/api/event/${selectedEvent.id}`, {
+      title,
+      meal_desc
+    });
 
-    // this.setState({
-    //   edit: !this.state.edit,
-    //   events: res.data,
-    //   openSnack: !this.state.openSnack,
-    //   snackMessage: "Event Successfully Updated"
-    // });
+    this.setState({
+      edit: !edit,
+      editEvent: !editEvent,
+      events: res.data,
+      openSnack: !openSnack,
+      snackMessage: "Event Successfully Updated"
+    });
   }
   async handleEventSubmit() {
     const title = document.getElementById("title-input").value;
@@ -107,10 +120,24 @@ class Calendar extends Component {
       start,
       end
     });
-    this.setState({ events: res.data, open: !this.state.open });
+    this.setState({
+      events: res.data,
+      open: !this.state.open,
+      openSnack: !this.state.openSnack,
+      snackMessage: "Signup Successful!"
+    });
   }
   handleSlotSelect(info) {
-    console.log(info);
+    const exists = this.state.events.findIndex(event =>
+      moment(info.start).isSame(event.start)
+    );
+    if (exists !== -1) {
+      this.setState({
+        openSnack: true,
+        snackMessage: "Date Taken. Please Choose Another."
+      });
+      return;
+    }
     this.setState({ open: !this.state.open, selectedDate: info });
   }
   render() {
@@ -180,6 +207,9 @@ class Calendar extends Component {
             style={{ width: "50%" }}
             hintText="Your Name"
             id="title-input"
+            onChange={event =>
+              this.setState({ meal_title: event.target.value })
+            }
           />
           <TextField
             style={{ width: "50%" }}
@@ -188,6 +218,7 @@ class Calendar extends Component {
             floatingLabelFixed={true}
             multiLine
             id="desc-input"
+            onChange={event => this.setState({ desc: event.target.value })}
           />
         </InputContainer>
       </Dialog>
@@ -204,7 +235,7 @@ class Calendar extends Component {
             onSelectSlot={info => this.handleSlotSelect(info)}
             onSelecting={e => this.handleSelecting(e)}
             popup
-            style={{ height: "50vh" }}
+            style={{ height: "50vh", width: "90vw", margin: "0 auto" }}
           />
         </CalendarContainer>
         {inputDialog}
