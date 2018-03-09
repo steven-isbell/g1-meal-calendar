@@ -129,9 +129,7 @@ class Calendar extends Component {
     });
   }
   handleSlotSelect(info) {
-    const isBefore = moment(new Date())
-      .subtract(24, "hours")
-      .isBefore(info.start);
+    const isBefore = moment(info.start).isBefore(moment().subtract(1, "d"));
     if (isBefore) {
       this.setState({
         openSnack: true,

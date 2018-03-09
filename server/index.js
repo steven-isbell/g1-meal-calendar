@@ -11,9 +11,7 @@ const {
   updateEvent
 } = require(`${__dirname}/controllers/calendarCtrl`);
 
-console.log(process.env);
-
-const port = (process.env.NODE_ENV = "development" ? 3001 : process.env.PORT);
+const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
 
 const app = express();
 
