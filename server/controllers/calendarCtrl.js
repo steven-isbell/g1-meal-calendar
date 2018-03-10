@@ -39,11 +39,13 @@ const addEvent = async (req, res) => {
   const formattedTitle = title.toLowerCase().startsWith("the ")
     ? title.replace(/the\s/gi, "")
     : title;
+  const testTime = moment(start).add(6, "h");
+  console.log(testTime);
   const client = await pool.connect();
   try {
     await client.query(
       "INSERT INTO events (start_time, end_time, title, meal_desc, allday) VALUES ($1, $2, $3, $4, true)",
-      [start, end, formattedTitle, meal_desc]
+      [testTime, end, formattedTitle, meal_desc]
     );
     getEvents(req, res);
   } catch (e) {
