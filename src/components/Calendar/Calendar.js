@@ -140,7 +140,7 @@ class Calendar extends Component {
     const exists = this.state.events.findIndex(event =>
       moment(info.start).isSame(event.start)
     );
-    console.log(info, exists);
+    console.log(info, exists, this.state.events);
     if (exists !== -1) {
       this.setState({
         openSnack: true,
