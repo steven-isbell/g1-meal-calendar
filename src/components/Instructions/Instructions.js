@@ -39,7 +39,7 @@ const legend = [
   {
     title: "Cancelling",
     actions: [
-      "To Cancel, Select Your Name, The Select Cancel Meal.",
+      "To Cancel, Select Your Name, Then Select Cancel Meal.",
       "If it is Less Than 24 Hours Notice, Please Inform the Missionaries or WML Directly."
     ]
   }

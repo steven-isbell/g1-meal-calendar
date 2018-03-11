@@ -113,7 +113,6 @@ class Calendar extends Component {
     const title = document.getElementById("title-input").value;
     const meal_desc = document.getElementById("desc-input").value;
     const { start, end } = this.state.selectedDate;
-
     const res = await axios.post("/api/events", {
       title,
       meal_desc,
@@ -136,8 +135,21 @@ class Calendar extends Component {
       });
       return;
     }
-    const exists = this.state.events.findIndex(event =>
-      moment(info.start).isSame(event.start)
+    const exists = this.state.events.findIndex(
+      event =>
+        parseInt(
+          moment(info.end)
+            .format("MM/DD/YYYY")
+            .split("/")[1],
+          10
+        ) ===
+        parseInt(
+          moment(event.end)
+            .format("MM/DD/YYYY")
+            .split("/")[1],
+          10
+        ) +
+          1
     );
     if (exists !== -1) {
       this.setState({

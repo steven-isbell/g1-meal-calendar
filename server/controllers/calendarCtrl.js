@@ -41,11 +41,13 @@ const addEvent = async (req, res) => {
   const formattedTitle = title.toLowerCase().startsWith("the ")
     ? title.replace(/the\s/gi, "")
     : title;
+  // days being rendered incorrectly on calendar, figure out why, but in the meantime, make sure to subtract 24 hrs if exporting data.
+  const formattedTime = moment(start).add(24, "h");
   const client = await pool.connect();
   try {
     await client.query(
       "INSERT INTO events (start_time, end_time, title, meal_desc, allday) VALUES ($1, $2, $3, $4, true)",
-      [start, end, formattedTitle, meal_desc]
+      [formattedTime, end, formattedTitle, meal_desc]
     );
     getEvents(req, res);
   } catch (e) {
