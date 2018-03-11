@@ -1,13 +1,15 @@
 const { Pool } = require("pg");
 const moment = require("moment");
 
-const pool =
-  process.env.NODE_ENV === "development"
-    ? new Pool({ connectionString: process.env.CONNECTION_STRING })
-    : new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: true
-      });
+const pool = new Pool({ connectionString: process.env.CONNECTION_STRING });
+
+// const pool =
+//   process.env.NODE_ENV === "development"
+//     ? new Pool({ connectionString: process.env.CONNECTION_STRING })
+//     : new Pool({
+//         connectionString: process.env.DATABASE_URL,
+//         ssl: true
+//       });
 
 pool.on("error", (err, client) => {
   console.error("Error in Client: ", err);
@@ -39,13 +41,11 @@ const addEvent = async (req, res) => {
   const formattedTitle = title.toLowerCase().startsWith("the ")
     ? title.replace(/the\s/gi, "")
     : title;
-  const testTime = moment(start).add(6, "h");
-  console.log(testTime);
   const client = await pool.connect();
   try {
     await client.query(
       "INSERT INTO events (start_time, end_time, title, meal_desc, allday) VALUES ($1, $2, $3, $4, true)",
-      [testTime, end, formattedTitle, meal_desc]
+      [start, end, formattedTitle, meal_desc]
     );
     getEvents(req, res);
   } catch (e) {

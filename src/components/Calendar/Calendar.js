@@ -82,7 +82,6 @@ class Calendar extends Component {
   }
   handleEventSelect(event) {
     this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
-    // console.log(moment().diff(this.state.selectedEvent.start, "h"));
   }
   async handleEventEdit() {
     const {
@@ -114,7 +113,6 @@ class Calendar extends Component {
     const title = document.getElementById("title-input").value;
     const meal_desc = document.getElementById("desc-input").value;
     const { start, end } = this.state.selectedDate;
-    console.log(start, end);
 
     const res = await axios.post("/api/events", {
       title,
@@ -141,7 +139,6 @@ class Calendar extends Component {
     const exists = this.state.events.findIndex(event =>
       moment(info.start).isSame(event.start)
     );
-    console.log(info, exists, this.state.events);
     if (exists !== -1) {
       this.setState({
         openSnack: true,
