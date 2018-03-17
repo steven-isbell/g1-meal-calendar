@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const { json } = require("body-parser");
 const cors = require("cors");
+const compression = require("compression");
 const path = require("path");
 
 const {
@@ -15,6 +16,7 @@ const port = 3001;
 
 const app = express();
 
+app.use(compression());
 app.use(cors());
 app.use(json());
 
@@ -29,8 +31,9 @@ if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../build/index.html"));
   });
+  app.listen(port);
+} else {
+  app.listen(port, () => {
+    console.log(`Listening on port: ${port}`);
+  });
 }
-
-app.listen(port, () => {
-  console.log(`Listening on port: ${port}`);
-});

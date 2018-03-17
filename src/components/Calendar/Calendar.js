@@ -8,11 +8,14 @@ import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
 
 import Instructions from "../Instructions/Instructions";
+import ImageLoader from "../ImageLoader/ImageLoader";
 import {
   Title,
   CalendarContainer,
   InputContainer
 } from "../../styledComponents";
+import missionaries from "../../assets/missionarymeal.jpg";
+import preload from "../../assets/preload.png";
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -308,11 +311,7 @@ class Calendar extends Component {
           className="modal"
         >
           <div className="flex">
-            <img
-              src="https://i.pinimg.com/originals/81/b9/da/81b9dacab519f1dd3e5ba73d31a04ea8.jpg"
-              alt="missionaries"
-              className="sad-missionaries"
-            />
+            <ImageLoader srcPreload={preload} srcLoaded={missionaries} />
             <p>A Hungry Missionary Is A Sad Missionary</p>
             {moment(new Date())
               .add(24, "hours")

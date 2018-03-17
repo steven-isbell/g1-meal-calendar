@@ -3,14 +3,6 @@ const moment = require("moment");
 
 const pool = new Pool({ connectionString: process.env.CONNECTION_STRING });
 
-// const pool =
-//   process.env.NODE_ENV === "development"
-//     ? new Pool({ connectionString: process.env.CONNECTION_STRING })
-//     : new Pool({
-//         connectionString: process.env.DATABASE_URL,
-//         ssl: true
-//       });
-
 pool.on("error", (err, client) => {
   console.error("Error in Client: ", err);
   process.exit(-1);
