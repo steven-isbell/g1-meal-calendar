@@ -21,14 +21,14 @@
     "styled-components": "^3.2.0"
   },
   "scripts": {
-    "start-dev":
+    "dev":
       "NODE_ENV=development concurrently --kill-others \"nodemon server/\" \"react-scripts start\"",
-    "start-prod": "nodemon server/",
+    "prod": "yarn build; NODE_ENV=production nodemon server/",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "now-start": "node server/index.js",
-    "deploy": "now --public --dotenv=.env -d"
+    "deploy": "now --public --dotenv=.env.prod -d"
   },
   "now": {
     "alias": "g1-meals"

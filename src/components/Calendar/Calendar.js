@@ -2,35 +2,19 @@ import React, { Component, Fragment } from "react";
 import axios from "axios";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
-import styled from "styled-components";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
 
 import Instructions from "../Instructions/Instructions";
+import {
+  Title,
+  CalendarContainer,
+  InputContainer
+} from "../../styledComponents";
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
-
-const CalendarContainer = styled.div`
-  min-height: 50vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Title = styled.h1`
-  font-size: 20px;
-`;
-
-const InputContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
 
 class Calendar extends Component {
   constructor(props) {
@@ -257,7 +241,7 @@ class Calendar extends Component {
       >
         <InputContainer>
           <TextField
-            style={{ width: "50%" }}
+            style={{ width: "90%" }}
             hintText="Your Name"
             id="title-input"
             onChange={event =>
@@ -265,7 +249,7 @@ class Calendar extends Component {
             }
           />
           <TextField
-            style={{ width: "50%" }}
+            style={{ width: "90%" }}
             hintText="Time, Place, Etc."
             floatingLabelText="Information"
             floatingLabelFixed={true}
