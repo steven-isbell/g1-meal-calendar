@@ -1,11 +1,11 @@
 import React from "react";
 
+import hotdog from "../../assets/running_hotdog.gif";
+
 const ErrorBoundaryFallbackComponent = ({ componentStack, error }) => (
   <div>
     <img
-      src={
-        "https://cdn.dribbble.com/users/102974/screenshots/2077946/running_hotdog.gif"
-      }
+      src={hotdog}
       style={{ height: "100vh", width: "100vw" }}
       alt="running hotdog gif"
     />
