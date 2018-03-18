@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+import preload from "../../assets/preload.png";
+
 class ImageLoader extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +32,9 @@ class ImageLoader extends Component {
         />
         <div
           className="iron-image-preload"
-          style={{ backgroundImage: `url('${this.props.srcPreload}')` }}
+          style={{
+            backgroundImage: `url('${this.props.srcPreload || preload}')`
+          }}
         />
       </div>
     );
@@ -38,8 +42,9 @@ class ImageLoader extends Component {
 }
 
 ImageLoader.propTypes = {
-  srcLoaded: PropTypes.string,
-  srcPreload: PropTypes.string
+  srcLoaded: PropTypes.string.isRequired,
+  srcPreload: PropTypes.string,
+  style: PropTypes.object
 };
 
 export default ImageLoader;

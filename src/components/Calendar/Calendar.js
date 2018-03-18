@@ -15,7 +15,6 @@ import {
   InputContainer
 } from "../../styledComponents";
 import missionaries from "../../assets/missionarymeal.jpg";
-import preload from "../../assets/preload.png";
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -39,7 +38,9 @@ class Calendar extends Component {
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.handleEventCancel = this.handleEventCancel.bind(this);
     this.handleEventEdit = this.handleEventEdit.bind(this);
+    this.validateSelection = this.validateSelection.bind(this);
   }
+
   async componentDidMount() {
     const buttons = document.querySelectorAll(".rbc-btn-group");
     const buttonsToRemove = buttons[1].childNodes;
@@ -58,6 +59,7 @@ class Calendar extends Component {
       console.error(err);
     }
   }
+
   async handleEventCancel() {
     const res = await axios.delete(`/api/event/${this.state.selectedEvent.id}`);
     this.setState({
@@ -67,9 +69,11 @@ class Calendar extends Component {
       snackMessage: "Cancellation Successful"
     });
   }
+
   handleEventSelect(event) {
     this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
   }
+
   async handleEventEdit() {
     const {
       meal_title,
@@ -96,6 +100,7 @@ class Calendar extends Component {
       snackMessage: "Event Successfully Updated"
     });
   }
+
   async handleEventSubmit() {
     const title = document.getElementById("title-input").value;
     const meal_desc = document.getElementById("desc-input").value;
@@ -113,8 +118,10 @@ class Calendar extends Component {
       snackMessage: "Signup Successful!"
     });
   }
-  handleSlotSelect(info) {
+
+  validateSelection(info) {
     const isBefore = moment(info.start).isBefore(moment().subtract(1, "d"));
+
     if (isBefore) {
       this.setState({
         openSnack: true,
@@ -122,6 +129,7 @@ class Calendar extends Component {
       });
       return;
     }
+
     const exists = this.state.events.findIndex(
       event =>
         parseInt(
@@ -138,6 +146,7 @@ class Calendar extends Component {
         ) +
           1
     );
+
     if (exists !== -1) {
       this.setState({
         openSnack: true,
@@ -145,8 +154,14 @@ class Calendar extends Component {
       });
       return;
     }
-    this.setState({ open: !this.state.open, selectedDate: info });
+    return true;
   }
+
+  handleSlotSelect(info) {
+    const valid = this.validateSelection(info);
+    if (valid) this.setState({ open: !this.state.open, selectedDate: info });
+  }
+
   render() {
     const {
       open,
@@ -264,6 +279,51 @@ class Calendar extends Component {
       </Dialog>
     );
 
+    const cancelDialog = (
+      <Dialog
+        title="Are You Sure?"
+        open={cancellation}
+        actions={cancelActions}
+        modal={true}
+        className="modal"
+      >
+        <div className="flex">
+          <ImageLoader srcLoaded={missionaries} />
+          <p>A Hungry Missionary Is A Sad Missionary</p>
+          {moment(new Date())
+            .add(24, "hours")
+            .isAfter(selectedEvent.start) && (
+            <p>
+              It is less than 24 hours until this appointment; if cancelling,
+              please inform the missionaries or WML.
+            </p>
+          )}
+        </div>
+      </Dialog>
+    );
+
+    const mealInfoDialog = (
+      <Dialog
+        title="Meal Information"
+        actions={editActions}
+        modal={true}
+        open={editEvent}
+        className="modal"
+      >
+        {selectedEvent.title && (
+          <p>
+            Dinner will be provided by{" "}
+            {selectedEvent.title.endsWith("'s") ||
+            selectedEvent.title.endsWith("s'") ||
+            selectedEvent.title.endsWith("es")
+              ? `the ${selectedEvent.title}`
+              : selectedEvent.title}
+          </p>
+        )}
+        <p>They left the following instructions: {selectedEvent.desc}</p>
+      </Dialog>
+    );
+
     return (
       <Fragment>
         <Title>G1 Missionary Meal Calendar</Title>
@@ -280,49 +340,8 @@ class Calendar extends Component {
           />
         </CalendarContainer>
         {inputDialog}
-        {!edit ? (
-          <Dialog
-            title="Meal Information"
-            actions={editActions}
-            modal={true}
-            open={editEvent}
-            className="modal"
-          >
-            {selectedEvent.title && (
-              <p>
-                Dinner will be provided by{" "}
-                {selectedEvent.title.endsWith("'s") ||
-                selectedEvent.title.endsWith("s'") ||
-                selectedEvent.title.endsWith("es")
-                  ? `the ${selectedEvent.title}`
-                  : selectedEvent.title}
-              </p>
-            )}
-            <p>They left the following instructions: {selectedEvent.desc}</p>
-          </Dialog>
-        ) : (
-          inputDialog
-        )}
-        <Dialog
-          title="Are You Sure?"
-          open={cancellation}
-          actions={cancelActions}
-          modal={true}
-          className="modal"
-        >
-          <div className="flex">
-            <ImageLoader srcPreload={preload} srcLoaded={missionaries} />
-            <p>A Hungry Missionary Is A Sad Missionary</p>
-            {moment(new Date())
-              .add(24, "hours")
-              .isAfter(selectedEvent.start) && (
-              <p>
-                It is less than 24 hours until this appointment; if cancelling,
-                please inform the missionaries or WML.
-              </p>
-            )}
-          </div>
-        </Dialog>
+        {!edit ? mealInfoDialog : inputDialog}
+        {cancelDialog}
         <Snackbar
           open={openSnack}
           message={snackMessage}
