@@ -23,7 +23,7 @@ class ImageLoader extends Component {
 
   render() {
     return (
-      <div className="iron-image-container">
+      <div className="iron-image-container" style={this.props.style}>
         <div
           className="iron-image-loaded"
           ref={imageLoadedElem => (this.staticImg = imageLoadedElem)}

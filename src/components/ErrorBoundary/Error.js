@@ -1,21 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import ImageLoader from "../ImageLoader/ImageLoader";
 import hotdog from "../../assets/running_hotdog.gif";
+import preload from "../../assets/preload.png";
 
 const ErrorBoundaryFallbackComponent = ({ componentStack, error }) => (
   <div>
-    <img
-      src={hotdog}
+    <ImageLoader
+      srcPreload={preload}
+      srcLoaded={hotdog}
       style={{ height: "100vh", width: "100vw" }}
-      alt="running hotdog gif"
     />
     <div
       style={{
         width: "250px",
         position: "absolute",
         top: "30vh",
-        left: "15vw"
+        left: "15vw",
+        zIndex: "10"
       }}
     >
       <p>
