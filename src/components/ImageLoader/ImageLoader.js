@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class ImageLoader extends Component {
   constructor(props) {
@@ -35,5 +36,10 @@ class ImageLoader extends Component {
     );
   }
 }
+
+ImageLoader.propTypes = {
+  srcLoaded: PropTypes.string,
+  srcPreload: PropTypes.string
+};
 
 export default ImageLoader;
