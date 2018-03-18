@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import hotdog from "../../assets/running_hotdog.gif";
 
@@ -24,5 +25,10 @@ const ErrorBoundaryFallbackComponent = ({ componentStack, error }) => (
     </div>
   </div>
 );
+
+ErrorBoundaryFallbackComponent.propTypes = {
+  componentStack: PropTypes.object,
+  error: PropTypes.object
+};
 
 export default ErrorBoundaryFallbackComponent;
