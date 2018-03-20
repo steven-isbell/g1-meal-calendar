@@ -257,6 +257,11 @@ class Calendar extends Component {
         open={edit ? edit : open}
         className="modal"
       >
+        {moment(this.state.selectedDate.start).day() === 1 && (
+          <p style={{ margin: "10px 0 0 0" }}>
+            P-Day: Ride needed in lieu of meal.
+          </p>
+        )}
         <InputContainer>
           <TextField
             style={{ width: "90%" }}
