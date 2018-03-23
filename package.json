@@ -22,7 +22,8 @@
     "styled-components": "^3.2.0"
   },
   "scripts": {
-    "dev": "NODE_ENV=development concurrently --kill-others \"nodemon server/\" \"react-scripts start\"",
+    "dev":
+      "NODE_ENV=development concurrently --kill-others \"nodemon server/\" \"react-scripts start\"",
     "prod": "yarn build; NODE_ENV=production nodemon server/",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
@@ -33,9 +34,5 @@
   "now": {
     "alias": "g1-meals"
   },
-  "proxy": "http://localhost:3001",
-  "devDependencies": {},
-  "engines": {
-    "node": "8.9.1"
-  }
+  "proxy": "http://localhost:3001"
 }
