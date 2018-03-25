@@ -130,22 +130,13 @@ class Calendar extends Component {
       return;
     }
 
-    const exists = this.state.events.findIndex(
-      event =>
-        parseInt(
-          moment(info.end)
-            .format("MM/DD/YYYY")
-            .split("/")[1],
-          10
-        ) ===
-        parseInt(
-          moment(event.end)
-            .format("MM/DD/YYYY")
-            .split("/")[1],
-          10
-        ) +
-          1
+    console.log("EVENTS: ", this.state.events);
+
+    const exists = this.state.events.findIndex(event =>
+      moment(info.end).isSame(moment(event.start))
     );
+
+    console.log("EXISTS: ", exists);
 
     if (exists !== -1) {
       this.setState({
