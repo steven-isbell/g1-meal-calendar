@@ -21,7 +21,7 @@ const ErrorBoundaryFallbackComponent = ({ componentStack, error }) => (
     >
       <p>
         We ran into an error, please refresh the page or click{" "}
-        <a href="http://localhost:3000/">here</a>
+        <a href="https://g1-meals.now.sh">here</a>
       </p>
     </div>
   </div>
