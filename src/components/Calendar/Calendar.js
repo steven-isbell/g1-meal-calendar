@@ -296,20 +296,35 @@ class Calendar extends Component {
 
     const mealInfoDialog = (
       <Dialog
-        title="Meal Information"
+        title={
+          moment(this.state.selectedDate.start).day() !== 1
+            ? "Meal Information"
+            : "Ride Information"
+        }
         actions={editActions}
         modal={true}
         open={editEvent}
         className="modal"
       >
-        {selectedEvent.title && (
+        {selectedEvent.title &&
+          moment(this.state.selectedDate.start).day() !== 1 && (
+            <p>
+              Dinner will be provided by{" "}
+              {selectedEvent.title.endsWith("'s") ||
+              selectedEvent.title.endsWith("s'") ||
+              selectedEvent.title.endsWith("es")
+                ? `the ${selectedEvent.title}`
+                : selectedEvent.title}
+            </p>
+          )}
+        {moment(this.state.selectedDate.start).day() === 1 && (
           <p>
-            Dinner will be provided by{" "}
+            Your ride will be provided by{" "}
             {selectedEvent.title.endsWith("'s") ||
             selectedEvent.title.endsWith("s'") ||
             selectedEvent.title.endsWith("es")
               ? `the ${selectedEvent.title}`
-              : selectedEvent.title}
+              : selectedEvent.title}{" "}
           </p>
         )}
         <p>They left the following instructions: {selectedEvent.desc}</p>
