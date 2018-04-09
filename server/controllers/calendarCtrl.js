@@ -28,7 +28,7 @@ const getEvents = async (req, res) => {
   }
 };
 
-const addEvent = async (req, res) => {
+const addEvent = async (req, res, next) => {
   const { start, end, title, meal_desc } = req.body;
   const formattedTitle = title.toLowerCase().startsWith("the ")
     ? title.replace(/the\s/gi, "")
@@ -47,6 +47,7 @@ const addEvent = async (req, res) => {
     res.status(500).json(e);
   } finally {
     client.release();
+    next();
   }
 };
 

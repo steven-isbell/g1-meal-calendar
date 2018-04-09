@@ -12,6 +12,8 @@ const {
   updateEvent
 } = require(`${__dirname}/controllers/calendarCtrl`);
 
+const { formatEmail } = require(`${__dirname}/controllers/emailCtrl`);
+
 const port = 3001;
 
 const app = express();
@@ -21,7 +23,7 @@ app.use(cors());
 app.use(json());
 
 app.get("/api/events", getEvents);
-app.post("/api/events", addEvent);
+app.post("/api/events", addEvent, formatEmail);
 app.delete("/api/event/:id", deleteEvent);
 app.patch("/api/event/:id", updateEvent);
 
