@@ -20,7 +20,7 @@ const job = new CronJob({
         try {
           await sendMail({
             from: "Steven Isbell <steven.isbell18@gmail.com>",
-            to: "steven.isbell18@gmail.com",
+            to: process.env.MISSIONARY_EMAIL,
             subject: "Meal Reminder",
             text: `Dinner tonight is with ${
               rows[0].title
