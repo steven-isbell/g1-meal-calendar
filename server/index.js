@@ -5,6 +5,8 @@ const cors = require("cors");
 const compression = require("compression");
 const path = require("path");
 
+require(`${__dirname}/controllers/cronCtrl`);
+
 const {
   getEvents,
   addEvent,

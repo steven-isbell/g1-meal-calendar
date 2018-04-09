@@ -1,12 +1,11 @@
 const nodemailer = require("nodemailer");
 const moment = require("moment");
 
-const { GMAIL_USER, GMAIL_PASS } = process.env;
+const { GMAIL_USER, GMAIL_PASS, MISSIONARY_EMAIL } = process.env;
 
 const sendMail = config => {
   // let mailOptions = {
   //   from: "Steven Isbell <steven.isbell18@gmail.com>",
-  //   // to: "435606419@mormon.org",
   //   to: "steven.isbell18@gmail.com",
   //   subject: "Meal Signup",
   //   text: "Test",
@@ -52,4 +51,4 @@ const formatEmail = async (req, res) => {
   }
 };
 
-module.exports = { formatEmail };
+module.exports = { formatEmail, sendMail };

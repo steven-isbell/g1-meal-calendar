@@ -1,11 +1,46 @@
 const { CronJob } = require("cron");
+const moment = require("moment");
 
-new CronJob(
-  "* * * * * *",
-  function() {
-    console.log("You will see this message every second");
+const db = require(`${__dirname}/../db/database`);
+const { sendMail } = require(`${__dirname}/emailCtrl`);
+
+const job = new CronJob({
+  cronTime: "00 00 08 * * *",
+  onTick: async function() {
+    console.log("Starting");
+    try {
+      const eventDate = moment()
+        .add(1, "d")
+        .format("YYYY-MM-DD");
+      const { rows } = await db.query(
+        `SELECT * FROM events WHERE start_time = $1`,
+        [eventDate]
+      );
+      if (rows[0]) {
+        try {
+          await sendMail({
+            from: "Steven Isbell <steven.isbell18@gmail.com>",
+            to: "steven.isbell18@gmail.com",
+            subject: "Meal Reminder",
+            text: `Dinner tonight is with ${
+              rows[0].title
+            } with these instructions: ${
+              rows[0].meal_desc ? rows[0].meal_desc : "no instructions left"
+            }`
+          });
+        } catch (e) {
+          throw e;
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return;
   },
-  null,
-  true,
-  "America/Los_Angeles"
-);
+  start: true,
+  timeZone: "America/Chicago"
+});
+
+module.exports = {
+  job
+};

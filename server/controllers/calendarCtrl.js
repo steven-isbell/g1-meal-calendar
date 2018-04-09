@@ -1,17 +1,10 @@
-const { Pool } = require("pg");
 const moment = require("moment");
 
-const pool = new Pool({ connectionString: process.env.CONNECTION_STRING });
-
-pool.on("error", (err, client) => {
-  console.error("Error in Client: ", err);
-  process.exit(-1);
-});
+const db = require(`${__dirname}/../db/database`);
 
 const getEvents = async (req, res) => {
-  const client = await pool.connect();
   try {
-    const response = await client.query("SELECT * FROM events");
+    const response = await db.query("SELECT * FROM events");
     const formattedData = response.rows.map(val => ({
       id: val.id,
       title: val.title,
@@ -20,11 +13,10 @@ const getEvents = async (req, res) => {
       desc: val.meal_desc,
       allDay: val.allday
     }));
+
     res.status(200).json(formattedData);
   } catch (e) {
     console.error(e);
-  } finally {
-    client.release();
   }
 };
 
@@ -36,50 +28,43 @@ const addEvent = async (req, res, next) => {
   // days being rendered incorrectly on calendar, figure out why, but in the meantime, make sure to subtract 24 hrs if exporting data.
   const formattedStart = moment(start).add(1, "d");
   const formattedEnd = moment(end).add(1, "d");
-  const client = await pool.connect();
   try {
-    await client.query(
+    await db.query(
       "INSERT INTO events (start_time, end_time, title, meal_desc, allday) VALUES ($1, $2, $3, $4, true)",
       [formattedStart, formattedEnd, formattedTitle, meal_desc]
     );
+
     getEvents(req, res);
   } catch (e) {
     res.status(500).json(e);
   } finally {
-    client.release();
     next();
   }
 };
 
 const deleteEvent = async (req, res) => {
   const { id } = req.params;
-  const client = await pool.connect();
 
   try {
-    await client.query("DELETE FROM events WHERE id = $1;", [id]);
+    await db.query("DELETE FROM events WHERE id = $1;", [id]);
     getEvents(req, res);
   } catch (e) {
     res.status(500).json(e);
-  } finally {
-    client.release();
   }
 };
 
 const updateEvent = async (req, res) => {
   const { id } = req.params;
   const { meal_desc, title } = req.body;
-  const client = await pool.connect();
 
   try {
-    await client.query(
+    await db.query(
       "UPDATE events SET title = $1, meal_desc = $2 WHERE id = $3;",
       [title, meal_desc, id]
     );
     getEvents(req, res);
   } catch (e) {
     res.status(500).json(e);
-  } finally {
-    client.release();
   }
 };
 
