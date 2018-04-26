@@ -83,4 +83,10 @@
   .rbc-toolbar .rbc-toolbar-label {
     padding: 0 10px;
   }
+  #break {
+    flex-direction: column;
+  }
+  #break div {
+    margin: 0 !important;
+  }
 }

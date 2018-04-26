@@ -180,7 +180,8 @@ class Calendar extends Component {
       openSnack,
       snackMessage,
       cancellation,
-      aux
+      aux,
+      authenticated
     } = this.state;
 
     const actions = [
@@ -361,7 +362,7 @@ class Calendar extends Component {
       <Fragment>
         <div>
           <Title>G1 Missionary Meal Calendar</Title>
-          <FlexedContainer>
+          <FlexedContainer id="break">
             <SelectField
               onChange={this.handleAuxChange}
               value={aux}
@@ -373,21 +374,31 @@ class Calendar extends Component {
               <MenuItem value={3} primaryText="Young Men" />
               <MenuItem value={2} primaryText="Young Women" />
             </SelectField>
-            <TextField
-              onChange={({ target }) => this.setState({ pass: target.value })}
-              id="pass"
-              style={{ marginRight: '15px' }}
-              hintText="Auxillary Leader Password"
-            />
-            <RaisedButton
-              primary={true}
-              label={'Submit'}
-              onClick={() =>
-                this.state.pass === process.env.REACT_APP_PASS
-                  ? this.setState({ authenticated: true })
-                  : alert('Please Enter Password')
-              }
-            />
+            {!authenticated ? (
+              <Fragment>
+                <TextField
+                  onChange={({ target }) =>
+                    this.setState({ pass: target.value })
+                  }
+                  id="pass"
+                  style={{ marginRight: '15px' }}
+                  hintText="Auxillary Leader Password"
+                />
+                <RaisedButton
+                  id="pass"
+                  primary={true}
+                  label={'Submit'}
+                  onClick={() =>
+                    this.state.pass === process.env.REACT_APP_PASS
+                      ? this.setState({ authenticated: true })
+                      : (document.getElementById('pass').style.border =
+                          '2px solid red')
+                  }
+                />
+              </Fragment>
+            ) : (
+              <p>You May Now Make Edits</p>
+            )}
           </FlexedContainer>
         </div>
         <CalendarContainer>
