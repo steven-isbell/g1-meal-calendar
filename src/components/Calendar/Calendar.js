@@ -407,7 +407,7 @@ class Calendar extends Component {
     return (
       <Fragment>
         <div>
-          <Title>G1 Calendar's</Title>
+          <Title>G1 Calendar</Title>
           <FlexedContainer id="break">
             <SelectField
               onChange={this.handleAuxChange}
