@@ -12,7 +12,7 @@ const job = new CronJob({
         .add(1, 'd')
         .format('YYYY-MM-DD');
       const { rows } = await db.query(
-        `SELECT * FROM events WHERE start_time = $1`,
+        `SELECT * FROM events WHERE start_time = $1 and aux_id = 5`,
         [eventDate]
       );
       if (rows[0]) {

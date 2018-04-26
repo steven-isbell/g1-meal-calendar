@@ -58,7 +58,7 @@ const addEvent = async (req, res, next) => {
   } catch (e) {
     res.status(500).json(e);
   } finally {
-    next();
+    if (parseInt(aux) === 5) next();
   }
 };
 
