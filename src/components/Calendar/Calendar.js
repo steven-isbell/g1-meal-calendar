@@ -329,7 +329,7 @@ class Calendar extends Component {
             </p>
           )
         )}
-        <p>They left the following instructions: {selectedEvent.desc}</p>
+        <p>They left the following instructions: {selectedEvent.desc || "None"}</p>
       </Dialog>
     );
 
