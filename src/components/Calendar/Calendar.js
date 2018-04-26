@@ -211,7 +211,7 @@ class Calendar extends Component {
         }
       />,
       <FlatButton
-        label="Cancel Meal"
+        label="Cancel"
         secondary={true}
         onClick={() =>
           this.setState({
@@ -221,7 +221,7 @@ class Calendar extends Component {
         }
       />,
       <FlatButton
-        label="Edit Meal"
+        label="Edit"
         primary={true}
         onClick={() => this.setState({ edit: !edit })}
       />
@@ -272,15 +272,16 @@ class Calendar extends Component {
         open={edit ? edit : open}
         className="modal"
       >
-        {moment(this.state.selectedDate.start).day() === 1 && (
-          <p style={{ margin: '10px 0 0 0' }}>
-            P-Day: Ride needed in lieu of meal.
-          </p>
-        )}
+        {moment(this.state.selectedDate.start).day() === 1 &&
+          aux === 5 && (
+            <p style={{ margin: '10px 0 0 0' }}>
+              P-Day: Ride needed in lieu of meal.
+            </p>
+          )}
         <InputContainer>
           <TextField
             style={{ width: '90%' }}
-            hintText="Your Name"
+            hintText={aux === 5 ? 'Your Name' : 'Event Title'}
             id="title-input"
             onChange={event =>
               this.setState({ meal_title: event.target.value })
@@ -288,9 +289,7 @@ class Calendar extends Component {
           />
           <TextField
             style={{ width: '90%' }}
-            hintText="Time, Place, Etc."
-            floatingLabelText="Information"
-            floatingLabelFixed={true}
+            hintText="Description"
             multiLine
             id="desc-input"
             onChange={event => this.setState({ desc: event.target.value })}
@@ -307,27 +306,31 @@ class Calendar extends Component {
         modal={true}
         className="modal"
       >
-        <div className="flex">
-          <ImageLoader srcLoaded={missionaries} />
-          <p>A Hungry Missionary Is A Sad Missionary</p>
-          {moment(new Date())
-            .add(24, 'hours')
-            .isAfter(selectedEvent.start) && (
-            <p>
-              It is less than 24 hours until this appointment; if cancelling,
-              please inform the missionaries or WML.
-            </p>
-          )}
-        </div>
+        {aux === 5 && (
+          <div className="flex">
+            <ImageLoader srcLoaded={missionaries} />
+            <p>A Hungry Missionary Is A Sad Missionary</p>
+            {moment(new Date())
+              .add(24, 'hours')
+              .isAfter(selectedEvent.start) && (
+              <p>
+                It is less than 24 hours until this appointment; if cancelling,
+                please inform the missionaries or WML.
+              </p>
+            )}
+          </div>
+        )}
       </Dialog>
     );
 
     const mealInfoDialog = (
       <Dialog
         title={
-          moment(this.state.selectedEvent.start).day() !== 1
-            ? 'Meal Information'
-            : 'Ride Information'
+          aux === 5
+            ? moment(this.state.selectedEvent.start).day() !== 1
+              ? 'Meal Information'
+              : 'Ride Information'
+            : 'Activity Information'
         }
         actions={
           aux === 5 || authenticated
@@ -346,32 +349,40 @@ class Calendar extends Component {
         open={editEvent}
         className="modal"
       >
-        {moment(this.state.selectedEvent.start).day() !== 1 &&
-        selectedEvent.title ? (
-          <p>
-            Dinner will be provided by{' '}
-            {selectedEvent.title.endsWith("'s") ||
-            selectedEvent.title.endsWith("s'") ||
-            selectedEvent.title.endsWith('es')
-              ? `the ${selectedEvent.title}`
-              : selectedEvent.title}
-          </p>
-        ) : (
-          moment(this.state.selectedEvent.start).day() === 1 &&
-          selectedEvent.title && (
+        {aux === 5 ? (
+          moment(this.state.selectedEvent.start).day() !== 1 &&
+          selectedEvent.title ? (
             <p>
-              Your ride will be provided by{' '}
+              Dinner will be provided by{' '}
               {selectedEvent.title.endsWith("'s") ||
               selectedEvent.title.endsWith("s'") ||
               selectedEvent.title.endsWith('es')
                 ? `the ${selectedEvent.title}`
-                : selectedEvent.title}{' '}
+                : selectedEvent.title}
             </p>
+          ) : (
+            moment(this.state.selectedEvent.start).day() === 1 &&
+            selectedEvent.title && (
+              <p>
+                Your ride will be provided by{' '}
+                {selectedEvent.title.endsWith("'s") ||
+                selectedEvent.title.endsWith("s'") ||
+                selectedEvent.title.endsWith('es')
+                  ? `the ${selectedEvent.title}`
+                  : selectedEvent.title}{' '}
+              </p>
+            )
           )
+        ) : (
+          <p>Activity Title: {selectedEvent.title}</p>
         )}
-        <p>
-          They left the following instructions: {selectedEvent.desc || 'None'}
-        </p>
+        {aux === 5 ? (
+          <p>
+            They left the following instructions: {selectedEvent.desc || 'None'}
+          </p>
+        ) : (
+          <p>Activity Description: {selectedEvent.desc || 'None'}</p>
+        )}
       </Dialog>
     );
 
