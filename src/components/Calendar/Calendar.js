@@ -8,13 +8,15 @@ import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import Instructions from '../Instructions/Instructions';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import {
   Title,
   CalendarContainer,
-  InputContainer
+  InputContainer,
+  FlexedContainer
 } from '../../styledComponents';
 import missionaries from '../../assets/missionarymeal.jpg';
 
@@ -36,7 +38,9 @@ class Calendar extends Component {
       snackMessage: '',
       openSnack: false,
       cancellation: false,
-      aux: 5
+      aux: 5,
+      authenticated: false,
+      pass: ''
     };
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.handleEventCancel = this.handleEventCancel.bind(this);
@@ -65,6 +69,8 @@ class Calendar extends Component {
   }
 
   async handleEventCancel() {
+    if (!this.state.authenticated && this.state.aux !== 5)
+      return alert('Please Enter Password');
     const res = await axios.delete(`/api/event/${this.state.selectedEvent.id}`);
     this.setState({
       events: res.data,
@@ -75,10 +81,14 @@ class Calendar extends Component {
   }
 
   handleEventSelect(event) {
+    if (!this.state.authenticated && this.state.aux !== 5)
+      return alert('Please Enter Password');
     this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
   }
 
   async handleEventEdit() {
+    if (!this.state.authenticated && this.state.aux !== 5)
+      return alert('Please Enter Password');
     const {
       meal_title,
       desc,
@@ -149,6 +159,8 @@ class Calendar extends Component {
   }
 
   handleSlotSelect(info) {
+    if (!this.state.authenticated && this.state.aux !== 5)
+      return alert('Please Enter Password');
     const valid = this.validateSelection(info);
     if (valid) this.setState({ open: !this.state.open, selectedDate: info });
   }
@@ -349,13 +361,34 @@ class Calendar extends Component {
       <Fragment>
         <div>
           <Title>G1 Missionary Meal Calendar</Title>
-          <SelectField onChange={this.handleAuxChange} value={aux}>
-            <MenuItem value={5} primaryText="Missionary" />
-            <MenuItem value={1} primaryText="Elders Quorum" />
-            <MenuItem value={4} primaryText="Relief Society" />
-            <MenuItem value={3} primaryText="Young Men" />
-            <MenuItem value={2} primaryText="Young Women" />
-          </SelectField>
+          <FlexedContainer>
+            <SelectField
+              onChange={this.handleAuxChange}
+              value={aux}
+              style={{ marginRight: '15px' }}
+            >
+              <MenuItem value={5} primaryText="Missionary" />
+              <MenuItem value={1} primaryText="Elders Quorum" />
+              <MenuItem value={4} primaryText="Relief Society" />
+              <MenuItem value={3} primaryText="Young Men" />
+              <MenuItem value={2} primaryText="Young Women" />
+            </SelectField>
+            <TextField
+              onChange={({ target }) => this.setState({ pass: target.value })}
+              id="pass"
+              style={{ marginRight: '15px' }}
+              hintText="Auxillary Leader Password"
+            />
+            <RaisedButton
+              primary={true}
+              label={'Submit'}
+              onClick={() =>
+                this.state.pass === process.env.REACT_APP_PASS
+                  ? this.setState({ authenticated: true })
+                  : alert('Please Enter Password')
+              }
+            />
+          </FlexedContainer>
         </div>
         <CalendarContainer>
           <BigCalendar
