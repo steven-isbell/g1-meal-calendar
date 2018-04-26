@@ -27,21 +27,22 @@ class Calendar extends Component {
     super(props);
     this.state = {
       events: [],
+      selectedEvent: {},
+      selectedDate: {},
       open: false,
       editEvent: false,
       edit: false,
-      selectedDate: {},
-      selectedEvent: {},
-      meal_title: '',
-      desc: '',
       loading: false,
-      snackMessage: '',
       openSnack: false,
       cancellation: false,
-      aux: 5,
       authenticated: false,
-      pass: ''
+      pass: '',
+      meal_title: '',
+      desc: '',
+      snackMessage: '',
+      aux: 5
     };
+
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.handleEventCancel = this.handleEventCancel.bind(this);
     this.handleEventEdit = this.handleEventEdit.bind(this);
@@ -71,9 +72,12 @@ class Calendar extends Component {
   async handleEventCancel() {
     if (!this.state.authenticated && this.state.aux !== 5)
       return alert('Please Enter Password');
-    const res = await axios.delete(`/api/event/${this.state.selectedEvent.id}`);
+    await axios.delete(
+      `/api/event/${this.state.aux}/${this.state.selectedEvent.id}`
+    );
+    const { data: events } = await axios.get(`/api/events/${this.state.aux}`);
     this.setState({
-      events: res.data,
+      events,
       cancellation: !this.state.cancellation,
       openSnack: !this.state.openSnack,
       snackMessage: 'Cancellation Successful'
@@ -81,8 +85,6 @@ class Calendar extends Component {
   }
 
   handleEventSelect(event) {
-    if (!this.state.authenticated && this.state.aux !== 5)
-      return alert('Please Enter Password');
     this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
   }
 
@@ -101,15 +103,16 @@ class Calendar extends Component {
     const title = meal_title || selectedEvent.title;
     const meal_desc = desc || selectedEvent.desc;
 
-    const res = await axios.patch(`/api/event/${selectedEvent.id}`, {
+    await axios.patch(`/api/event/${selectedEvent.id}`, {
       title,
       meal_desc
     });
+    const { data: events } = await axios.get(`/api/events/${this.state.aux}`);
 
     this.setState({
       edit: !edit,
       editEvent: !editEvent,
-      events: res.data,
+      events,
       openSnack: !openSnack,
       snackMessage: 'Event Successfully Updated'
     });
@@ -119,11 +122,13 @@ class Calendar extends Component {
     const title = document.getElementById('title-input').value;
     const meal_desc = document.getElementById('desc-input').value;
     const { start, end } = this.state.selectedDate;
+    const { aux } = this.state;
     const res = await axios.post('/api/events', {
       title,
       meal_desc,
       start,
-      end
+      end,
+      aux
     });
     this.setState({
       events: res.data,
@@ -324,7 +329,19 @@ class Calendar extends Component {
             ? 'Meal Information'
             : 'Ride Information'
         }
-        actions={editActions}
+        actions={
+          aux === 5 || authenticated
+            ? editActions
+            : [
+                <FlatButton
+                  label="Exit"
+                  primary={true}
+                  onClick={() =>
+                    this.setState({ editEvent: !editEvent, selectedEvent: {} })
+                  }
+                />
+              ]
+        }
         modal={true}
         open={editEvent}
         className="modal"

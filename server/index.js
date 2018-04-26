@@ -28,8 +28,8 @@ app.use(json());
 app.get('/api/events', getEvents);
 app.get('/api/events/:id', getEventsByID);
 app.post('/api/events', addEvent, formatEmail);
-app.delete('/api/event/:id', deleteEvent);
-app.patch('/api/event/:id', updateEvent);
+app.delete('/api/event/:aux_id/:id', deleteEvent);
+app.patch('/api/event/:aux_id/:id', updateEvent);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(`${__dirname}/../build`));
