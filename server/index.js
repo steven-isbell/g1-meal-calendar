@@ -1,14 +1,15 @@
-require("dotenv").config();
-const express = require("express");
-const { json } = require("body-parser");
-const cors = require("cors");
-const compression = require("compression");
-const path = require("path");
+require('dotenv').config();
+const express = require('express');
+const { json } = require('body-parser');
+const cors = require('cors');
+const compression = require('compression');
+const path = require('path');
 
 require(`${__dirname}/controllers/cronCtrl`);
 
 const {
   getEvents,
+  getEventsByID,
   addEvent,
   deleteEvent,
   updateEvent
@@ -24,16 +25,17 @@ app.use(compression());
 app.use(cors());
 app.use(json());
 
-app.get("/api/events", getEvents);
-app.post("/api/events", addEvent, formatEmail);
-app.delete("/api/event/:id", deleteEvent);
-app.patch("/api/event/:id", updateEvent);
+app.get('/api/events', getEvents);
+app.get('/api/events/:id', getEventsByID);
+app.post('/api/events', addEvent, formatEmail);
+app.delete('/api/event/:id', deleteEvent);
+app.patch('/api/event/:id', updateEvent);
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static(`${__dirname}/../build`));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../build/index.html"));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build/index.html'));
   });
   app.listen(port);
 } else {

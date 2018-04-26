@@ -6,3 +6,8 @@ CREATE TABLE events (
     meal_desc TEXT,
     allday BOOLEAN
 )
+
+CREATE TABLE aux (
+    id SERIAL PRIMARY KEY,
+    type varchar(55)
+);

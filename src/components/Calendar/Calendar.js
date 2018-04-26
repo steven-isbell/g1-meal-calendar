@@ -1,20 +1,20 @@
-import React, { Component, Fragment } from "react";
-import axios from "axios";
-import BigCalendar from "react-big-calendar";
-import moment from "moment";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import TextField from "material-ui/TextField";
-import Snackbar from "material-ui/Snackbar";
+import React, { Component, Fragment } from 'react';
+import axios from 'axios';
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+import Snackbar from 'material-ui/Snackbar';
 
-import Instructions from "../Instructions/Instructions";
-import ImageLoader from "../ImageLoader/ImageLoader";
+import Instructions from '../Instructions/Instructions';
+import ImageLoader from '../ImageLoader/ImageLoader';
 import {
   Title,
   CalendarContainer,
   InputContainer
-} from "../../styledComponents";
-import missionaries from "../../assets/missionarymeal.jpg";
+} from '../../styledComponents';
+import missionaries from '../../assets/missionarymeal.jpg';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -28,10 +28,10 @@ class Calendar extends Component {
       edit: false,
       selectedDate: {},
       selectedEvent: {},
-      meal_title: "",
-      desc: "",
+      meal_title: '',
+      desc: '',
       loading: false,
-      snackMessage: "",
+      snackMessage: '',
       openSnack: false,
       cancellation: false
     };
@@ -42,18 +42,18 @@ class Calendar extends Component {
   }
 
   async componentDidMount() {
-    const buttons = document.querySelectorAll(".rbc-btn-group");
+    const buttons = document.querySelectorAll('.rbc-btn-group');
     const buttonsToRemove = buttons[1].childNodes;
     buttonsToRemove.forEach(
       (button, idx) =>
         idx
-          ? (button.style.display = "none")
-          : (button.style.borderRadius = "5px")
+          ? (button.style.display = 'none')
+          : (button.style.borderRadius = '5px')
     );
     buttons[0].childNodes[0].click();
-    buttons[0].childNodes[1].innerText = "prev";
+    buttons[0].childNodes[1].innerText = 'prev';
     try {
-      const res = await axios("/api/events");
+      const res = await axios('/api/events/5');
       this.setState({ events: res.data });
     } catch (err) {
       console.error(err);
@@ -66,7 +66,7 @@ class Calendar extends Component {
       events: res.data,
       cancellation: !this.state.cancellation,
       openSnack: !this.state.openSnack,
-      snackMessage: "Cancellation Successful"
+      snackMessage: 'Cancellation Successful'
     });
   }
 
@@ -97,15 +97,15 @@ class Calendar extends Component {
       editEvent: !editEvent,
       events: res.data,
       openSnack: !openSnack,
-      snackMessage: "Event Successfully Updated"
+      snackMessage: 'Event Successfully Updated'
     });
   }
 
   async handleEventSubmit() {
-    const title = document.getElementById("title-input").value;
-    const meal_desc = document.getElementById("desc-input").value;
+    const title = document.getElementById('title-input').value;
+    const meal_desc = document.getElementById('desc-input').value;
     const { start, end } = this.state.selectedDate;
-    const res = await axios.post("/api/events", {
+    const res = await axios.post('/api/events', {
       title,
       meal_desc,
       start,
@@ -115,17 +115,17 @@ class Calendar extends Component {
       events: res.data,
       open: !this.state.open,
       openSnack: !this.state.openSnack,
-      snackMessage: "Signup Successful!"
+      snackMessage: 'Signup Successful!'
     });
   }
 
   validateSelection(info) {
-    const isBefore = moment(info.start).isBefore(moment().subtract(1, "d"));
+    const isBefore = moment(info.start).isBefore(moment().subtract(1, 'd'));
 
     if (isBefore) {
       this.setState({
         openSnack: true,
-        snackMessage: "This Day Has Passed"
+        snackMessage: 'This Day Has Passed'
       });
       return;
     }
@@ -137,7 +137,7 @@ class Calendar extends Component {
     if (exists !== -1) {
       this.setState({
         openSnack: true,
-        snackMessage: "Date Taken. Please Choose Another."
+        snackMessage: 'Date Taken. Please Choose Another.'
       });
       return;
     }
@@ -245,13 +245,13 @@ class Calendar extends Component {
         className="modal"
       >
         {moment(this.state.selectedDate.start).day() === 1 && (
-          <p style={{ margin: "10px 0 0 0" }}>
+          <p style={{ margin: '10px 0 0 0' }}>
             P-Day: Ride needed in lieu of meal.
           </p>
         )}
         <InputContainer>
           <TextField
-            style={{ width: "90%" }}
+            style={{ width: '90%' }}
             hintText="Your Name"
             id="title-input"
             onChange={event =>
@@ -259,7 +259,7 @@ class Calendar extends Component {
             }
           />
           <TextField
-            style={{ width: "90%" }}
+            style={{ width: '90%' }}
             hintText="Time, Place, Etc."
             floatingLabelText="Information"
             floatingLabelFixed={true}
@@ -283,7 +283,7 @@ class Calendar extends Component {
           <ImageLoader srcLoaded={missionaries} />
           <p>A Hungry Missionary Is A Sad Missionary</p>
           {moment(new Date())
-            .add(24, "hours")
+            .add(24, 'hours')
             .isAfter(selectedEvent.start) && (
             <p>
               It is less than 24 hours until this appointment; if cancelling,
@@ -298,8 +298,8 @@ class Calendar extends Component {
       <Dialog
         title={
           moment(this.state.selectedEvent.start).day() !== 1
-            ? "Meal Information"
-            : "Ride Information"
+            ? 'Meal Information'
+            : 'Ride Information'
         }
         actions={editActions}
         modal={true}
@@ -309,10 +309,10 @@ class Calendar extends Component {
         {moment(this.state.selectedEvent.start).day() !== 1 &&
         selectedEvent.title ? (
           <p>
-            Dinner will be provided by{" "}
+            Dinner will be provided by{' '}
             {selectedEvent.title.endsWith("'s") ||
             selectedEvent.title.endsWith("s'") ||
-            selectedEvent.title.endsWith("es")
+            selectedEvent.title.endsWith('es')
               ? `the ${selectedEvent.title}`
               : selectedEvent.title}
           </p>
@@ -320,16 +320,18 @@ class Calendar extends Component {
           moment(this.state.selectedEvent.start).day() === 1 &&
           selectedEvent.title && (
             <p>
-              Your ride will be provided by{" "}
+              Your ride will be provided by{' '}
               {selectedEvent.title.endsWith("'s") ||
               selectedEvent.title.endsWith("s'") ||
-              selectedEvent.title.endsWith("es")
+              selectedEvent.title.endsWith('es')
                 ? `the ${selectedEvent.title}`
-                : selectedEvent.title}{" "}
+                : selectedEvent.title}{' '}
             </p>
           )
         )}
-        <p>They left the following instructions: {selectedEvent.desc || "None"}</p>
+        <p>
+          They left the following instructions: {selectedEvent.desc || 'None'}
+        </p>
       </Dialog>
     );
 
@@ -344,7 +346,7 @@ class Calendar extends Component {
             onSelectSlot={info => this.handleSlotSelect(info)}
             onSelecting={e => this.handleSelecting(e)}
             popup
-            style={{ height: "50vh", width: "90vw", margin: "0 auto" }}
+            style={{ height: '50vh', width: '90vw', margin: '0 auto' }}
             id="calendar"
           />
         </CalendarContainer>
