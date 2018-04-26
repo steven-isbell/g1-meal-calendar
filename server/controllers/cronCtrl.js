@@ -15,21 +15,21 @@ const job = new CronJob({
         `SELECT * FROM events WHERE start_time = $1 and aux_id = 5`,
         [eventDate]
       );
-      if (rows[0]) {
-        try {
-          await sendMail({
-            from: 'Steven Isbell <steven.isbell18@gmail.com>',
-            to: process.env.MISSIONARY_EMAIL,
-            subject: 'Meal Reminder',
-            text: `Dinner tonight is with ${
-              rows[0].title
-            } with these instructions: ${
-              rows[0].meal_desc ? rows[0].meal_desc : 'no instructions left'
-            }`
-          });
-        } catch (e) {
-          throw e;
-        }
+      try {
+        await sendMail({
+          from: 'Steven Isbell <steven.isbell18@gmail.com>',
+          to: process.env.MISSIONARY_EMAIL,
+          subject: 'Meal Reminder',
+          text: rows[0]
+            ? `Dinner tonight is with ${
+                rows[0].title
+              } with these instructions: ${
+                rows[0].meal_desc ? rows[0].meal_desc : 'no instructions left'
+              }`
+            : 'No ones is scheduled for this evening.'
+        });
+      } catch (e) {
+        throw e;
       }
     } catch (e) {
       console.log(e);
