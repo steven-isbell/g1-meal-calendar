@@ -4,7 +4,8 @@ CREATE TABLE events (
     end_time VARCHAR(55) NOT NULL,
     title VARCHAR(100) NOT NULL,
     meal_desc TEXT,
-    allday BOOLEAN
+    allday BOOLEAN,
+    FOREIGN KEY (aux_id) REFERENCES aux (id)
 )
 
 CREATE TABLE aux (

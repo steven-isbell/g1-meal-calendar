@@ -6,6 +6,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import Instructions from '../Instructions/Instructions';
 import ImageLoader from '../ImageLoader/ImageLoader';
@@ -33,12 +35,14 @@ class Calendar extends Component {
       loading: false,
       snackMessage: '',
       openSnack: false,
-      cancellation: false
+      cancellation: false,
+      aux: 5
     };
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.handleEventCancel = this.handleEventCancel.bind(this);
     this.handleEventEdit = this.handleEventEdit.bind(this);
     this.validateSelection = this.validateSelection.bind(this);
+    this.handleAuxChange = this.handleAuxChange.bind(this);
   }
 
   async componentDidMount() {
@@ -149,6 +153,11 @@ class Calendar extends Component {
     if (valid) this.setState({ open: !this.state.open, selectedDate: info });
   }
 
+  async handleAuxChange(event, index, value) {
+    const res = await axios(`/api/events/${value}`);
+    this.setState({ events: res.data, aux: value });
+  }
+
   render() {
     const {
       open,
@@ -158,7 +167,8 @@ class Calendar extends Component {
       edit,
       openSnack,
       snackMessage,
-      cancellation
+      cancellation,
+      aux
     } = this.state;
 
     const actions = [
@@ -337,7 +347,16 @@ class Calendar extends Component {
 
     return (
       <Fragment>
-        <Title>G1 Missionary Meal Calendar</Title>
+        <div>
+          <Title>G1 Missionary Meal Calendar</Title>
+          <SelectField onChange={this.handleAuxChange} value={aux}>
+            <MenuItem value={5} primaryText="Missionary" />
+            <MenuItem value={1} primaryText="Elders Quorum" />
+            <MenuItem value={4} primaryText="Relief Society" />
+            <MenuItem value={3} primaryText="Young Men" />
+            <MenuItem value={2} primaryText="Young Women" />
+          </SelectField>
+        </div>
         <CalendarContainer>
           <BigCalendar
             events={events}
