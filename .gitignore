@@ -13,6 +13,7 @@ build/
 .DS_Store
 .env
 .env.prod
+.vscode
 
 npm-debug.log*
 yarn-debug.log*
