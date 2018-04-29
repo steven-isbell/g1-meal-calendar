@@ -36,7 +36,6 @@ class Calendar extends Component {
       openSnack: false,
       cancellation: false,
       authenticated: false,
-      auth: false,
       pass: '',
       meal_title: '',
       desc: '',
@@ -71,8 +70,6 @@ class Calendar extends Component {
   }
 
   async handleEventCancel() {
-    if (!this.state.authenticated && this.state.aux !== 5)
-      return this.setState({ auth: !this.state.auth });
     await axios.delete(
       `/api/event/${this.state.aux}/${this.state.selectedEvent.id}`
     );
@@ -90,8 +87,6 @@ class Calendar extends Component {
   }
 
   async handleEventEdit() {
-    if (!this.state.authenticated && this.state.aux !== 5)
-      return this.setState({ auth: !this.state.auth });
     const {
       meal_title,
       desc,
@@ -165,8 +160,6 @@ class Calendar extends Component {
   }
 
   handleSlotSelect(info) {
-    if (!this.state.authenticated && this.state.aux !== 5)
-      return this.setState({ auth: !this.state.auth });
     const valid = this.validateSelection(info);
     if (valid) this.setState({ open: !this.state.open, selectedDate: info });
   }
@@ -187,8 +180,7 @@ class Calendar extends Component {
       snackMessage,
       cancellation,
       aux,
-      authenticated,
-      auth
+      authenticated
     } = this.state;
 
     const actions = [
@@ -388,22 +380,6 @@ class Calendar extends Component {
       </Dialog>
     );
 
-    const authDialog = (
-      <Dialog
-        title="Please Enter Password"
-        open={auth}
-        actions={[
-          <FlatButton
-            label="ok"
-            primary={true}
-            onClick={() => this.setState({ auth: !auth })}
-          />
-        ]}
-        modal={true}
-        className="modal"
-      />
-    );
-
     return (
       <Fragment>
         <div>
@@ -464,7 +440,6 @@ class Calendar extends Component {
         {inputDialog}
         {!edit ? mealInfoDialog : inputDialog}
         {cancelDialog}
-        {authDialog}
         <Snackbar
           open={openSnack}
           message={snackMessage}
