@@ -409,17 +409,19 @@ class Calendar extends Component {
         <div>
           <Title>G1 Calendar</Title>
           <FlexedContainer id="break">
-            <SelectField
-              onChange={this.handleAuxChange}
-              value={aux}
-              style={{ marginRight: '15px' }}
-            >
-              <MenuItem value={5} primaryText="Missionary" />
-              <MenuItem value={1} primaryText="Elders Quorum" />
-              <MenuItem value={4} primaryText="Relief Society" />
-              <MenuItem value={3} primaryText="Young Men" />
-              <MenuItem value={2} primaryText="Young Women" />
-            </SelectField>
+            {authenticated && (
+              <SelectField
+                onChange={this.handleAuxChange}
+                value={aux}
+                style={{ marginRight: '15px' }}
+              >
+                <MenuItem value={5} primaryText="Missionary" />
+                <MenuItem value={1} primaryText="Elders Quorum" />
+                <MenuItem value={4} primaryText="Relief Society" />
+                <MenuItem value={3} primaryText="Young Men" />
+                <MenuItem value={2} primaryText="Young Women" />
+              </SelectField>
+            )}
             {!authenticated ? (
               <Fragment>
                 <TextField
@@ -469,7 +471,7 @@ class Calendar extends Component {
           autoHideDuration={3000}
           onRequestClose={() => this.setState({ openSnack: !openSnack })}
         />
-        <Instructions />
+        <Instructions isAuthenticated={authenticated} />
       </Fragment>
     );
   }
