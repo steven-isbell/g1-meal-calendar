@@ -5,8 +5,6 @@ const cors = require('cors');
 const compression = require('compression');
 const path = require('path');
 
-const { job } = require(`${__dirname}/controllers/cronCtrl`);
-
 const {
   getEvents,
   getEventsByID,
@@ -32,7 +30,6 @@ app.delete('/api/event/:aux_id/:id', deleteEvent);
 app.patch('/api/event/:aux_id/:id', updateEvent);
 
 if (process.env.NODE_ENV === 'production') {
-  job.start();
   app.use(express.static(`${__dirname}/../build`));
 
   app.get('*', (req, res) => {

@@ -6,7 +6,7 @@ const { sendMail } = require(`${__dirname}/emailCtrl`);
 
 const job = new CronJob({
   cronTime: '00 00 08 * * *',
-  onTick: async function() {
+  async onTick() {
     try {
       const eventDate = moment()
         .add(1, 'd')
@@ -24,7 +24,7 @@ const job = new CronJob({
             ? `Dinner tonight is with ${
                 rows[0].title
               } with these instructions: ${
-                rows[0].meal_desc ? rows[0].meal_desc : 'no instructions left'
+                rows[0].meal_desc ? rows[0].meal_desc : 'No instructions left'
               }`
             : 'No ones is scheduled for this evening.'
         });
