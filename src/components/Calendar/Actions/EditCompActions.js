@@ -1,7 +1,7 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
-const EditCompActions = ({
+const editCompActions = ({
   handleChildState,
   editEvent,
   edit,
@@ -21,4 +21,4 @@ const EditCompActions = ({
   <FlatButton label="Submit" primary={true} onClick={handleEventEdit} />
 ];
 
-export default EditCompActions;
+export default editCompActions;

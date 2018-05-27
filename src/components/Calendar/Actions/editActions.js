@@ -1,7 +1,7 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
-const EditActions = (handleChildState, editEvent, cancellation) => [
+const editActions = (handleChildState, editEvent, cancellation) => [
   <FlatButton
     label="Exit"
     primary={true}
@@ -25,3 +25,5 @@ const EditActions = (handleChildState, editEvent, cancellation) => [
     onClick={() => handleChildState({ edit: !edit })}
   />
 ];
+
+export default editActions;

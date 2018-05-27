@@ -2,23 +2,14 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import Instructions from '../Instructions/Instructions';
-import ImageLoader from '../ImageLoader/ImageLoader';
 import {
   Title,
   CalendarContainer,
-  InputContainer,
   FlexedContainer
 } from '../../styledComponents';
-import missionaries from '../../assets/missionarymeal.jpg';
 import AuxSelect from './AuxSelect/AuxSelect';
 import AuthInput from './AuthInput/AuthInput';
 

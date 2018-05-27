@@ -4,6 +4,8 @@ import TextField from 'material-ui/TextField';
 import moment from 'moment';
 
 import { InputContainer } from '../../../styledComponents';
+import editCompActions from '../Actions/editCompActions';
+import actions from '../Actions/actions';
 
 const InputDialog = ({ edit, open, selectedDate, handleChildState }) => (
   <Dialog
