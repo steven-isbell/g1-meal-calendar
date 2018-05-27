@@ -2,9 +2,12 @@ import React from 'react';
 import moment from 'moment';
 import Dialog from 'material-ui/Dialog';
 
-import ImageLoader from '../../ImageLoader/ImageLoader';
+import cancelActions from '../Actions/cancelActions';
 
-const cancelDialog = (
+import ImageLoader from '../../ImageLoader/ImageLoader';
+import missionaries from '../../../assets/missionarymeal.jpg';
+
+const CancelDialog = ({ cancellation, aux, selectedEvent }) => (
   <Dialog
     title="Are You Sure?"
     open={cancellation}
@@ -28,3 +31,5 @@ const cancelDialog = (
     )}
   </Dialog>
 );
+
+export default CancelDialog;

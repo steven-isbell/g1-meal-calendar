@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const AuthInput = (authenticated, pass, handleChildState) => {
+const AuthInput = ({ authenticated, pass, handleChildState }) => {
   return !authenticated ? (
     <Fragment>
       <TextField

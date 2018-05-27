@@ -1,7 +1,7 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
-const actions = (handleChildState, handleEventSubmit, open) => [
+const actions = ({ handleChildState, handleEventSubmit, open }) => [
   <FlatButton
     label="Exit"
     primary={true}
