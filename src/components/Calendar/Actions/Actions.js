@@ -1,10 +1,13 @@
-const Actions = () => [
+import React from 'react';
+import FlatButton from 'material-ui/FlatButton';
+
+const Actions = (handleChildState, handleEventSubmit, open) => [
   <FlatButton
     label="Exit"
     primary={true}
-    onClick={() => this.setState({ open: !open })}
+    onClick={() => handleChildState({ open: !open })}
   />,
-  <FlatButton label="Submit" primary={true} onClick={this.handleEventSubmit} />
+  <FlatButton label="Submit" primary={true} onClick={handleEventSubmit} />
 ];
 
 export default Actions;

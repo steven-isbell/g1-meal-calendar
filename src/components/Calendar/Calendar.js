@@ -78,17 +78,6 @@ class Calendar extends Component {
     });
   };
 
-  handleCancel = () => {
-    this.setState({
-      cancellation: !cancellation,
-      selectedEvent: {}
-    });
-  };
-
-  handleEventSelect = event => {
-    this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
-  };
-
   handleEventEdit = async () => {
     const {
       meal_title,
@@ -211,7 +200,12 @@ class Calendar extends Component {
           <BigCalendar
             events={events}
             selectable
-            onSelectEvent={e => this.handleEventSelect(e)}
+            onSelectEvent={e =>
+              this.handleChildState({
+                editEvent: !this.state.editEvent,
+                selectedEvent: e
+              })
+            }
             onSelectSlot={info => this.handleSlotSelect(info)}
             onSelecting={e => this.handleSelecting(e)}
             popup
