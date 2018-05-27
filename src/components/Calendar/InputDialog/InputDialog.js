@@ -4,13 +4,36 @@ import TextField from 'material-ui/TextField';
 import moment from 'moment';
 
 import { InputContainer } from '../../../styledComponents';
-import editCompActions from '../Actions/editCompActions';
-import actions from '../Actions/actions';
+import EditCompActions from '../Actions/EditCompActions';
+import Actions from '../Actions/Actions';
 
-const InputDialog = ({ edit, open, selectedDate, handleChildState }) => (
+const InputDialog = ({
+  edit,
+  open,
+  selectedDate,
+  handleChildState,
+  handleEventEdit,
+  handleEventSubmit,
+  editEvent
+}) => (
   <Dialog
     title="Enter Information"
-    actions={edit ? editCompActions : actions}
+    actions={
+      edit ? (
+        <EditCompActions
+          handleChildState={handleChildState}
+          handleEventEdit={handleEventEdit}
+          editEvent={editEvent}
+          edit={edit}
+        />
+      ) : (
+        <Actions
+          handleChildState={handleChildState}
+          handleEventSubmit={handleEventSubmit}
+          open={open}
+        />
+      )
+    }
     modal={true}
     open={edit ? edit : open}
     className="modal"

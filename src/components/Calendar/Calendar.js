@@ -5,13 +5,17 @@ import moment from 'moment';
 import Snackbar from 'material-ui/Snackbar';
 
 import Instructions from '../Instructions/Instructions';
+import AuxSelect from './AuxSelect/AuxSelect';
+import AuthInput from './AuthInput/AuthInput';
+import MealInfoDialog from './MealInfoDialog/MealInfoDialog';
+import InputDialog from './InputDialog/InputDialog';
+import CancelDialog from './CancelDialog/CancelDialog';
+
 import {
   Title,
   CalendarContainer,
   FlexedContainer
 } from '../../styledComponents';
-import AuxSelect from './AuxSelect/AuxSelect';
-import AuthInput from './AuthInput/AuthInput';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -168,7 +172,8 @@ class Calendar extends Component {
       cancellation,
       aux,
       authenticated,
-      pass
+      pass,
+      selectedDate
     } = this.state;
 
     return (
@@ -204,9 +209,31 @@ class Calendar extends Component {
             id="calendar"
           />
         </CalendarContainer>
-        {inputDialog}
-        {!edit ? mealInfoDialog : inputDialog}
-        {cancelDialog}
+        {/* <InputDialog /> */}
+        {!edit ? (
+          <MealInfoDialog
+            selectedEvent={selectedEvent}
+            aux={aux}
+            authenticated={authenticated}
+            editEvent={editEvent}
+            handleChildState={this.handleChildState}
+          />
+        ) : (
+          <InputDialog
+            edit={edit}
+            open={open}
+            selectedDate={selectedDate}
+            handleChildState={this.handleChildState}
+            handleEventEdit={this.handleEventEdit}
+            handleEventSubmit={this.handleEventSubmit}
+            editEvent={editEvent}
+          />
+        )}
+        <CancelDialog
+          cancellation={cancellation}
+          aux={aux}
+          selectedEvent={selectedEvent}
+        />
         <Snackbar
           open={openSnack}
           message={snackMessage}

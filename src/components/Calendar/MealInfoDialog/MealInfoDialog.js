@@ -2,14 +2,15 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-import editActions from '../Actions/editActions';
+import EditActions from '../Actions/EditActions';
 
 const MealInfoDialog = ({
   selectedEvent,
   aux,
   authenticated,
   editEvent,
-  handleChildState
+  handleChildState,
+  cancellation
 }) => (
   <Dialog
     title={
@@ -20,17 +21,23 @@ const MealInfoDialog = ({
         : 'Activity Information'
     }
     actions={
-      aux === 5 || authenticated
-        ? editActions
-        : [
-            <FlatButton
-              label="Exit"
-              primary={true}
-              onClick={() =>
-                handleChildState({ editEvent: !editEvent, selectedEvent: {} })
-              }
-            />
-          ]
+      aux === 5 || authenticated ? (
+        <EditActions
+          cancellation={cancellation}
+          handleChildState={handleChildState}
+          editEvent={editEvent}
+        />
+      ) : (
+        [
+          <FlatButton
+            label="Exit"
+            primary={true}
+            onClick={() =>
+              handleChildState({ editEvent: !editEvent, selectedEvent: {} })
+            }
+          />
+        ]
+      )
     }
     modal={true}
     open={editEvent}

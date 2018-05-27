@@ -1,7 +1,7 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
-const cancelActions = ({
+const CancelActions = ({
   handleEventCancel,
   handleChildState,
   cancellation
@@ -19,4 +19,4 @@ const cancelActions = ({
   <FlatButton label="Yes" secondary={true} onClick={handleEventCancel} />
 ];
 
-export default cancelActions;
+export default CancelActions;
