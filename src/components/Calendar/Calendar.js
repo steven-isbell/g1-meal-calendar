@@ -44,13 +44,6 @@ class Calendar extends Component {
       snackMessage: '',
       aux: 5
     };
-
-    this.handleEventSubmit = this.handleEventSubmit.bind(this);
-    this.handleEventCancel = this.handleEventCancel.bind(this);
-    this.handleEventEdit = this.handleEventEdit.bind(this);
-    this.validateSelection = this.validateSelection.bind(this);
-    this.handleAuxChange = this.handleAuxChange.bind(this);
-    this.handleChildState = this.handleChildState.bind(this);
   }
 
   async componentDidMount() {
@@ -82,6 +75,13 @@ class Calendar extends Component {
       cancellation: !this.state.cancellation,
       openSnack: !this.state.openSnack,
       snackMessage: 'Cancellation Successful'
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      cancellation: !cancellation,
+      selectedEvent: {}
     });
   };
 
@@ -172,8 +172,8 @@ class Calendar extends Component {
     this.setState({ events, aux: value });
   };
 
-  handleChildState = (arg, value) => {
-    this.setState({ arg: value });
+  handleChildState = state => {
+    this.setState(state);
   };
 
   render() {

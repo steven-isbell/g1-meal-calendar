@@ -1,14 +1,19 @@
-const EditActions = () => [
+import React from 'react';
+import FlatButton from 'material-ui/FlatButton';
+
+const EditActions = (handleChildState, editEvent, cancellation) => [
   <FlatButton
     label="Exit"
     primary={true}
-    onClick={() => this.setState({ editEvent: !editEvent, selectedEvent: {} })}
+    onClick={() =>
+      handleChildState({ editEvent: !editEvent, selectedEvent: {} })
+    }
   />,
   <FlatButton
     label="Cancel"
     secondary={true}
     onClick={() =>
-      this.setState({
+      handleChildState({
         editEvent: !editEvent,
         cancellation: !cancellation
       })
@@ -17,6 +22,6 @@ const EditActions = () => [
   <FlatButton
     label="Edit"
     primary={true}
-    onClick={() => this.setState({ edit: !edit })}
+    onClick={() => handleChildState({ edit: !edit })}
   />
 ];

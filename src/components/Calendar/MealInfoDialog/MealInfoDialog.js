@@ -1,4 +1,14 @@
-const MealInfoDialog = ({ selectedEvent, aux, authenticated, editEvent }) => (
+import React from 'react';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+
+const MealInfoDialog = ({
+  selectedEvent,
+  aux,
+  authenticated,
+  editEvent,
+  handleChildState
+}) => (
   <Dialog
     title={
       aux === 5
@@ -15,7 +25,7 @@ const MealInfoDialog = ({ selectedEvent, aux, authenticated, editEvent }) => (
               label="Exit"
               primary={true}
               onClick={() =>
-                this.setState({ editEvent: !editEvent, selectedEvent: {} })
+                handleChildState({ editEvent: !editEvent, selectedEvent: {} })
               }
             />
           ]

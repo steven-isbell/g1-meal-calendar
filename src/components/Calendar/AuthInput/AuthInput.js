@@ -1,8 +1,11 @@
+import React, { Fragment } from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
+
 const AuthInput = (authenticated, pass, handleChildState) => {
   return !authenticated ? (
     <Fragment>
       <TextField
-        onChange={({ target }) => handleChildState('pass', target.value)}
+        onChange={({ target }) => handleChildState({ pass: target.value })}
         id="pass"
         style={{ marginRight: '15px' }}
         hintText="Auxillary Leader Password"
@@ -13,7 +16,7 @@ const AuthInput = (authenticated, pass, handleChildState) => {
         label={'Submit'}
         onClick={() =>
           pass === process.env.REACT_APP_PASS
-            ? handleChildState('authenticated', true)
+            ? handleChildState({ authenticated: true })
             : (document.getElementById('pass').style.border = '2px solid red')
         }
       />
