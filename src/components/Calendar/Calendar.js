@@ -19,6 +19,7 @@ import {
   FlexedContainer
 } from '../../styledComponents';
 import missionaries from '../../assets/missionarymeal.jpg';
+import AuxSelect from './AuxSelect/AuxSelect';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -183,221 +184,15 @@ class Calendar extends Component {
       authenticated
     } = this.state;
 
-    const actions = [
-      <FlatButton
-        label="Exit"
-        primary={true}
-        onClick={() => this.setState({ open: !open })}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        onClick={this.handleEventSubmit}
-      />
-    ];
-
-    const editActions = [
-      <FlatButton
-        label="Exit"
-        primary={true}
-        onClick={() =>
-          this.setState({ editEvent: !editEvent, selectedEvent: {} })
-        }
-      />,
-      <FlatButton
-        label="Cancel"
-        secondary={true}
-        onClick={() =>
-          this.setState({
-            editEvent: !editEvent,
-            cancellation: !cancellation
-          })
-        }
-      />,
-      <FlatButton
-        label="Edit"
-        primary={true}
-        onClick={() => this.setState({ edit: !edit })}
-      />
-    ];
-
-    const editCompActions = [
-      <FlatButton
-        label="Exit"
-        primary={true}
-        onClick={() =>
-          this.setState({
-            editEvent: !editEvent,
-            edit: !edit,
-            selectedEvent: {}
-          })
-        }
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        onClick={this.handleEventEdit}
-      />
-    ];
-
-    const cancelActions = [
-      <FlatButton
-        label="No"
-        primary={true}
-        onClick={() =>
-          this.setState({
-            cancellation: !cancellation,
-            selectedEvent: {}
-          })
-        }
-      />,
-      <FlatButton
-        label="Yes"
-        secondary={true}
-        onClick={this.handleEventCancel}
-      />
-    ];
-
-    const inputDialog = (
-      <Dialog
-        title="Enter Information"
-        actions={edit ? editCompActions : actions}
-        modal={true}
-        open={edit ? edit : open}
-        className="modal"
-      >
-        {moment(this.state.selectedDate.start).day() === 1 &&
-          aux === 5 && (
-            <p style={{ margin: '10px 0 0 0' }}>
-              P-Day: Ride needed in lieu of meal.
-            </p>
-          )}
-        <InputContainer>
-          <TextField
-            style={{ width: '90%' }}
-            hintText={aux === 5 ? 'Your Name' : 'Event Title'}
-            id="title-input"
-            onChange={event =>
-              this.setState({ meal_title: event.target.value })
-            }
-          />
-          <TextField
-            style={{ width: '90%' }}
-            hintText="Description"
-            multiLine
-            id="desc-input"
-            onChange={event => this.setState({ desc: event.target.value })}
-          />
-        </InputContainer>
-      </Dialog>
-    );
-
-    const cancelDialog = (
-      <Dialog
-        title="Are You Sure?"
-        open={cancellation}
-        actions={cancelActions}
-        modal={true}
-        className="modal"
-      >
-        {aux === 5 && (
-          <div className="flex">
-            <ImageLoader srcLoaded={missionaries} />
-            <p>A Hungry Missionary Is A Sad Missionary</p>
-            {moment(new Date())
-              .add(24, 'hours')
-              .isAfter(selectedEvent.start) && (
-              <p>
-                It is less than 24 hours until this appointment; if cancelling,
-                please inform the missionaries or WML.
-              </p>
-            )}
-          </div>
-        )}
-      </Dialog>
-    );
-
-    const mealInfoDialog = (
-      <Dialog
-        title={
-          aux === 5
-            ? moment(this.state.selectedEvent.start).day() !== 1
-              ? 'Meal Information'
-              : 'Ride Information'
-            : 'Activity Information'
-        }
-        actions={
-          aux === 5 || authenticated
-            ? editActions
-            : [
-                <FlatButton
-                  label="Exit"
-                  primary={true}
-                  onClick={() =>
-                    this.setState({ editEvent: !editEvent, selectedEvent: {} })
-                  }
-                />
-              ]
-        }
-        modal={true}
-        open={editEvent}
-        className="modal"
-      >
-        {aux === 5 ? (
-          moment(this.state.selectedEvent.start).day() !== 1 &&
-          selectedEvent.title ? (
-            <p>
-              Dinner will be provided by{' '}
-              {selectedEvent.title.endsWith("'s") ||
-              selectedEvent.title.endsWith("s'") ||
-              selectedEvent.title.endsWith('es')
-                ? `the ${selectedEvent.title}`
-                : selectedEvent.title}
-            </p>
-          ) : (
-            moment(this.state.selectedEvent.start).day() === 1 &&
-            selectedEvent.title && (
-              <p>
-                Your ride will be provided by{' '}
-                {selectedEvent.title.endsWith("'s") ||
-                selectedEvent.title.endsWith("s'") ||
-                selectedEvent.title.endsWith('es')
-                  ? `the ${selectedEvent.title}`
-                  : selectedEvent.title}{' '}
-              </p>
-            )
-          )
-        ) : (
-          <p>Activity Title: {selectedEvent.title}</p>
-        )}
-        {aux === 5 ? (
-          <p>
-            They left the following instructions: {selectedEvent.desc || 'None'}
-          </p>
-        ) : (
-          <p>Activity Description: {selectedEvent.desc || 'None'}</p>
-        )}
-      </Dialog>
-    );
-
     return (
       <Fragment>
         <div>
           <Title>G1 Calendar</Title>
           <FlexedContainer id="break">
-            {authenticated && (
-              <SelectField
-                onChange={this.handleAuxChange}
-                value={aux}
-                style={{ marginRight: '15px' }}
-              >
-                <MenuItem value={5} primaryText="Missionary" />
-                <MenuItem value={1} primaryText="Elders Quorum" />
-                <MenuItem value={4} primaryText="Relief Society" />
-                <MenuItem value={3} primaryText="Young Men" />
-                <MenuItem value={2} primaryText="Young Women" />
-              </SelectField>
-            )}
+            <AuxSelect
+              authenticated={authenticated}
+              handleAuxChange={this.handleAuxChange}
+            />
             {!authenticated ? (
               <Fragment>
                 <TextField

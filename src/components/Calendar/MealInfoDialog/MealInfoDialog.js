@@ -1,0 +1,61 @@
+const MealInfoDialog = ({ selectedEvent, aux, authenticated, editEvent }) => (
+  <Dialog
+    title={
+      aux === 5
+        ? moment(selectedEvent.start).day() !== 1
+          ? 'Meal Information'
+          : 'Ride Information'
+        : 'Activity Information'
+    }
+    actions={
+      aux === 5 || authenticated
+        ? editActions
+        : [
+            <FlatButton
+              label="Exit"
+              primary={true}
+              onClick={() =>
+                this.setState({ editEvent: !editEvent, selectedEvent: {} })
+              }
+            />
+          ]
+    }
+    modal={true}
+    open={editEvent}
+    className="modal"
+  >
+    {aux === 5 ? (
+      moment(selectedEvent.start).day() !== 1 && selectedEvent.title ? (
+        <p>
+          Dinner will be provided by{' '}
+          {selectedEvent.title.endsWith("'s") ||
+          selectedEvent.title.endsWith("s'") ||
+          selectedEvent.title.endsWith('es')
+            ? `the ${selectedEvent.title}`
+            : selectedEvent.title}
+        </p>
+      ) : (
+        moment(selectedEvent.start).day() === 1 &&
+        selectedEvent.title && (
+          <p>
+            Your ride will be provided by{' '}
+            {selectedEvent.title.endsWith("'s") ||
+            selectedEvent.title.endsWith("s'") ||
+            selectedEvent.title.endsWith('es')
+              ? `the ${selectedEvent.title}`
+              : selectedEvent.title}{' '}
+          </p>
+        )
+      )
+    ) : (
+      <p>Activity Title: {selectedEvent.title}</p>
+    )}
+    {aux === 5 ? (
+      <p>
+        They left the following instructions: {selectedEvent.desc || 'None'}
+      </p>
+    ) : (
+      <p>Activity Description: {selectedEvent.desc || 'None'}</p>
+    )}
+  </Dialog>
+);
