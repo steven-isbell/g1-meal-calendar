@@ -20,6 +20,7 @@ import {
 } from '../../styledComponents';
 import missionaries from '../../assets/missionarymeal.jpg';
 import AuxSelect from './AuxSelect/AuxSelect';
+import AuthInput from './AuthInput/AuthInput';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -49,6 +50,7 @@ class Calendar extends Component {
     this.handleEventEdit = this.handleEventEdit.bind(this);
     this.validateSelection = this.validateSelection.bind(this);
     this.handleAuxChange = this.handleAuxChange.bind(this);
+    this.handleChildState = this.handleChildState.bind(this);
   }
 
   async componentDidMount() {
@@ -70,7 +72,7 @@ class Calendar extends Component {
     }
   }
 
-  async handleEventCancel() {
+  handleEventCancel = async () => {
     await axios.delete(
       `/api/event/${this.state.aux}/${this.state.selectedEvent.id}`
     );
@@ -81,13 +83,13 @@ class Calendar extends Component {
       openSnack: !this.state.openSnack,
       snackMessage: 'Cancellation Successful'
     });
-  }
+  };
 
-  handleEventSelect(event) {
+  handleEventSelect = event => {
     this.setState({ editEvent: !this.state.editEvent, selectedEvent: event });
-  }
+  };
 
-  async handleEventEdit() {
+  handleEventEdit = async () => {
     const {
       meal_title,
       desc,
@@ -113,9 +115,9 @@ class Calendar extends Component {
       openSnack: !openSnack,
       snackMessage: 'Event Successfully Updated'
     });
-  }
+  };
 
-  async handleEventSubmit() {
+  handleEventSubmit = async () => {
     const title = document.getElementById('title-input').value;
     const meal_desc = document.getElementById('desc-input').value;
     const { start, end } = this.state.selectedDate;
@@ -133,9 +135,9 @@ class Calendar extends Component {
       openSnack: !this.state.openSnack,
       snackMessage: 'Signup Successful!'
     });
-  }
+  };
 
-  validateSelection(info) {
+  validateSelection = info => {
     const isBefore = moment(info.start).isBefore(moment().subtract(1, 'd'));
 
     if (isBefore) {
@@ -158,17 +160,21 @@ class Calendar extends Component {
       return;
     }
     return true;
-  }
+  };
 
-  handleSlotSelect(info) {
+  handleSlotSelect = info => {
     const valid = this.validateSelection(info);
     if (valid) this.setState({ open: !this.state.open, selectedDate: info });
-  }
+  };
 
-  async handleAuxChange(event, index, value) {
+  handleAuxChange = async (event, index, value) => {
     const { data: events } = await axios(`/api/events/${value}`);
     this.setState({ events, aux: value });
-  }
+  };
+
+  handleChildState = (arg, value) => {
+    this.setState({ arg: value });
+  };
 
   render() {
     const {
@@ -181,7 +187,8 @@ class Calendar extends Component {
       snackMessage,
       cancellation,
       aux,
-      authenticated
+      authenticated,
+      pass
     } = this.state;
 
     return (
@@ -193,31 +200,11 @@ class Calendar extends Component {
               authenticated={authenticated}
               handleAuxChange={this.handleAuxChange}
             />
-            {!authenticated ? (
-              <Fragment>
-                <TextField
-                  onChange={({ target }) =>
-                    this.setState({ pass: target.value })
-                  }
-                  id="pass"
-                  style={{ marginRight: '15px' }}
-                  hintText="Auxillary Leader Password"
-                />
-                <RaisedButton
-                  id="pass"
-                  primary={true}
-                  label={'Submit'}
-                  onClick={() =>
-                    this.state.pass === process.env.REACT_APP_PASS
-                      ? this.setState({ authenticated: true })
-                      : (document.getElementById('pass').style.border =
-                          '2px solid red')
-                  }
-                />
-              </Fragment>
-            ) : (
-              <p>You May Now Make Edits</p>
-            )}
+            <AuthInput
+              pass={pass}
+              handleChildState={this.handleChildState}
+              authenticated={authenticated}
+            />
           </FlexedContainer>
         </div>
         <CalendarContainer>
