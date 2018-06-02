@@ -15,8 +15,14 @@ const CancelActions = ({
         selectedEvent: {}
       })
     }
+    key={1}
   />,
-  <FlatButton label="Yes" secondary={true} onClick={handleEventCancel} />
+  <FlatButton
+    label="Yes"
+    secondary={true}
+    onClick={handleEventCancel}
+    key={2}
+  />
 ];
 
 export default CancelActions;

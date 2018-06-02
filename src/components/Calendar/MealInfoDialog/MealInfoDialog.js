@@ -1,6 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import moment from 'moment';
 
 import EditActions from '../Actions/EditActions';
 
@@ -10,7 +11,8 @@ const MealInfoDialog = ({
   authenticated,
   editEvent,
   handleChildState,
-  cancellation
+  cancellation,
+  edit
 }) => (
   <Dialog
     title={
@@ -26,6 +28,7 @@ const MealInfoDialog = ({
           cancellation={cancellation}
           handleChildState={handleChildState}
           editEvent={editEvent}
+          edit={edit}
         />
       ) : (
         [
@@ -78,3 +81,5 @@ const MealInfoDialog = ({
     )}
   </Dialog>
 );
+
+export default MealInfoDialog;

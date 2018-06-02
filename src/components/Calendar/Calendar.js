@@ -184,6 +184,7 @@ class Calendar extends Component {
             <AuxSelect
               authenticated={authenticated}
               handleAuxChange={this.handleAuxChange}
+              aux={aux}
             />
             <AuthInput
               pass={pass}
@@ -217,6 +218,7 @@ class Calendar extends Component {
             authenticated={authenticated}
             editEvent={editEvent}
             handleChildState={this.handleChildState}
+            edit={edit}
           />
         ) : (
           <InputDialog
@@ -227,12 +229,14 @@ class Calendar extends Component {
             handleEventEdit={this.handleEventEdit}
             handleEventSubmit={this.handleEventSubmit}
             editEvent={editEvent}
+            aux={aux}
           />
         )}
         <CancelDialog
           cancellation={cancellation}
           aux={aux}
           selectedEvent={selectedEvent}
+          handleChildState={this.handleChildState}
         />
         <Snackbar
           open={openSnack}

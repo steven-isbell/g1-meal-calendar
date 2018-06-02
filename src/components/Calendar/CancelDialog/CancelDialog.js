@@ -12,7 +12,7 @@ const CancelDialog = ({
   aux,
   selectedEvent,
   handleEventCancel,
-  handleChildSelect
+  handleChildState
 }) => (
   <Dialog
     title="Are You Sure?"
@@ -20,7 +20,7 @@ const CancelDialog = ({
     actions={
       <CancelActions
         handleEventCancel={handleEventCancel}
-        handleChildSelect={handleChildSelect}
+        handleChildState={handleChildState}
         cancellation={cancellation}
       />
     }

@@ -14,7 +14,8 @@ const InputDialog = ({
   handleChildState,
   handleEventEdit,
   handleEventSubmit,
-  editEvent
+  editEvent,
+  aux
 }) => (
   <Dialog
     title="Enter Information"
@@ -61,3 +62,5 @@ const InputDialog = ({
     </InputContainer>
   </Dialog>
 );
+
+export default InputDialog;
