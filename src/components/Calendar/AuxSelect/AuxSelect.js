@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -18,6 +19,12 @@ const AuxSelect = ({ aux, authenticated, handleAuxChange }) => {
       </SelectField>
     )
   );
+};
+
+AuxSelect.propTypes = {
+  aux: PropTypes.number,
+  authenticated: PropTypes.bool,
+  handleAuxChange: PropTypes.func.isRequired
 };
 
 export default AuxSelect;

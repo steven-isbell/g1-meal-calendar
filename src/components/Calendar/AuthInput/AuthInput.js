@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
@@ -25,6 +26,12 @@ const AuthInput = ({ authenticated, pass, handleChildState }) => {
   ) : (
     <p>You May Now Make Edits</p>
   );
+};
+
+AuthInput.propTypes = {
+  authenticated: PropTypes.bool,
+  pass: PropTypes.string.isRequired,
+  handleChildState: PropTypes.func.isRequired
 };
 
 export default AuthInput;
