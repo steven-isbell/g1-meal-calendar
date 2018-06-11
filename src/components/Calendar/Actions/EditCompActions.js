@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 
 const EditCompActions = ({
@@ -26,5 +27,12 @@ const EditCompActions = ({
     key="submit"
   />
 ];
+
+EditCompActions.propTypes = {
+  handleChildState: PropTypes.func.isRequired,
+  handleEventEdit: PropTypes.func,
+  editEvent: PropTypes.bool,
+  edit: PropTypes.bool
+};
 
 export default EditCompActions;

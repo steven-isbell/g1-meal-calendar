@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 
 const EditActions = ({ handleChildState, editEvent, cancellation, edit }) => [
@@ -28,5 +29,12 @@ const EditActions = ({ handleChildState, editEvent, cancellation, edit }) => [
     key="edit"
   />
 ];
+
+EditActions.propTypes = {
+  handleChildState: PropTypes.func.isRequired,
+  editEvent: PropTypes.bool,
+  cancellation: PropTypes.bool,
+  edit: PropTypes.bool
+};
 
 export default EditActions;

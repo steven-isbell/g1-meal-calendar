@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 
 const Actions = ({ handleChildState, handleEventSubmit, open }) => [
@@ -15,5 +16,11 @@ const Actions = ({ handleChildState, handleEventSubmit, open }) => [
     key="submit"
   />
 ];
+
+Actions.propTypes = {
+  handleChildState: PropTypes.func.isRequired,
+  handleEventSubmit: PropTypes.func.isRequired,
+  open: PropTypes.bool
+};
 
 export default Actions;
