@@ -17,8 +17,14 @@ const EditCompActions = ({
         selectedEvent: {}
       })
     }
+    key="exit"
   />,
-  <FlatButton label="Submit" primary={true} onClick={handleEventEdit} />
+  <FlatButton
+    label="Submit"
+    primary={true}
+    onClick={handleEventEdit}
+    key="submit"
+  />
 ];
 
 export default EditCompActions;

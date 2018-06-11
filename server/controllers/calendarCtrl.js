@@ -66,7 +66,10 @@ const deleteEvent = async (req, res) => {
   const { id, aux_id } = req.params;
 
   try {
-    await db.query('DELETE FROM events WHERE id = $1;', [id]);
+    await db.query('DELETE FROM events WHERE id = $1 AND aux_id = $2;', [
+      id,
+      aux_id
+    ]);
     res.status(200).json({ message: 'Success' });
   } catch (e) {
     res.status(500).json(e);
@@ -79,8 +82,8 @@ const updateEvent = async (req, res) => {
 
   try {
     await db.query(
-      'UPDATE events SET title = $1, meal_desc = $2 WHERE id = $3;',
-      [title, meal_desc, id]
+      'UPDATE events SET title = $1, meal_desc = $2 WHERE id = $3 AND aux_id = $4;',
+      [title, meal_desc, id, aux_id]
     );
     res.status(200).json({ message: 'Success' });
   } catch (e) {

@@ -8,7 +8,7 @@ const EditActions = ({ handleChildState, editEvent, cancellation, edit }) => [
     onClick={() =>
       handleChildState({ editEvent: !editEvent, selectedEvent: {} })
     }
-    key={1}
+    key="exit"
   />,
   <FlatButton
     label="Cancel"
@@ -19,13 +19,13 @@ const EditActions = ({ handleChildState, editEvent, cancellation, edit }) => [
         cancellation: !cancellation
       })
     }
-    key={2}
+    key="cancel"
   />,
   <FlatButton
     label="Edit"
     primary={true}
-    onClick={() => handleChildState({ edit: !edit })}
-    key={3}
+    onClick={() => handleChildState({ edit: !edit, editEvent: !editEvent })}
+    key="edit"
   />
 ];
 

@@ -74,19 +74,12 @@ class Calendar extends Component {
   };
 
   handleEventEdit = async () => {
-    const {
-      meal_title,
-      desc,
-      selectedEvent,
-      edit,
-      openSnack,
-      editEvent
-    } = this.state;
+    const { meal_title, desc, selectedEvent, edit, openSnack } = this.state;
 
     const title = meal_title || selectedEvent.title;
     const meal_desc = desc || selectedEvent.desc;
 
-    await axios.patch(`/api/event/${selectedEvent.id}`, {
+    await axios.patch(`/api/event/${this.state.aux}/${selectedEvent.id}`, {
       title,
       meal_desc
     });
@@ -94,7 +87,6 @@ class Calendar extends Component {
 
     this.setState({
       edit: !edit,
-      editEvent: !editEvent,
       events,
       openSnack: !openSnack,
       snackMessage: 'Event Successfully Updated'
@@ -175,7 +167,6 @@ class Calendar extends Component {
       pass,
       selectedDate
     } = this.state;
-
     return (
       <Fragment>
         <div>
