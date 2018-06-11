@@ -6,8 +6,14 @@ const Actions = ({ handleChildState, handleEventSubmit, open }) => [
     label="Exit"
     primary={true}
     onClick={() => handleChildState({ open: !open })}
+    key="exit"
   />,
-  <FlatButton label="Submit" primary={true} onClick={handleEventSubmit} />
+  <FlatButton
+    label="Submit"
+    primary={true}
+    onClick={handleEventSubmit}
+    key="submit"
+  />
 ];
 
 export default Actions;

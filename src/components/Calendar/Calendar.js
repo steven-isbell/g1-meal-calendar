@@ -210,33 +210,30 @@ class Calendar extends Component {
             id="calendar"
           />
         </CalendarContainer>
-        {/* <InputDialog /> */}
-        {!edit ? (
-          <MealInfoDialog
-            selectedEvent={selectedEvent}
-            aux={aux}
-            authenticated={authenticated}
-            editEvent={editEvent}
-            handleChildState={this.handleChildState}
-            edit={edit}
-          />
-        ) : (
-          <InputDialog
-            edit={edit}
-            open={open}
-            selectedDate={selectedDate}
-            handleChildState={this.handleChildState}
-            handleEventEdit={this.handleEventEdit}
-            handleEventSubmit={this.handleEventSubmit}
-            editEvent={editEvent}
-            aux={aux}
-          />
-        )}
+        <InputDialog
+          edit={edit}
+          open={open}
+          selectedDate={selectedDate}
+          handleChildState={this.handleChildState}
+          handleEventEdit={this.handleEventEdit}
+          handleEventSubmit={this.handleEventSubmit}
+          editEvent={editEvent}
+          aux={aux}
+        />
+        <MealInfoDialog
+          selectedEvent={selectedEvent}
+          aux={aux}
+          authenticated={authenticated}
+          editEvent={editEvent}
+          handleChildState={this.handleChildState}
+          edit={edit}
+        />
         <CancelDialog
           cancellation={cancellation}
           aux={aux}
           selectedEvent={selectedEvent}
           handleChildState={this.handleChildState}
+          handleEventCancel={this.handleEventCancel}
         />
         <Snackbar
           open={openSnack}

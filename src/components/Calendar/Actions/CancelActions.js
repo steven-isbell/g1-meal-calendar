@@ -15,13 +15,13 @@ const CancelActions = ({
         selectedEvent: {}
       })
     }
-    key={1}
+    key="No"
   />,
   <FlatButton
     label="Yes"
     secondary={true}
     onClick={handleEventCancel}
-    key={2}
+    key="Yes"
   />
 ];
 

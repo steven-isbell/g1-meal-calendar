@@ -1,8 +1,10 @@
 const { CronJob } = require('cron');
 const moment = require('moment');
+const sgMail = require('@sendgrid/mail');
 
 const db = require(`${__dirname}/../db/database`);
-const { sendMail } = require(`${__dirname}/emailCtrl`);
+
+sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 const job = new CronJob({
   cronTime: '00 00 08 * * *',
@@ -16,7 +18,7 @@ const job = new CronJob({
         [eventDate]
       );
       try {
-        await sendMail({
+        await sgMail.send({
           from: 'Steven Isbell <steven.isbell18@gmail.com>',
           to: process.env.MISSIONARY_EMAIL,
           subject: 'Meal Reminder',

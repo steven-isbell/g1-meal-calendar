@@ -1,20 +1,9 @@
 const sgMail = require('@sendgrid/mail');
 const moment = require('moment');
 
-const { GMAIL_USER, GMAIL_PASS, MISSIONARY_EMAIL, SEND_GRID_KEY } = process.env;
+const { GMAIL_USER, GMAIL_PASS, MISSIONARY_EMAIL, SENDGRID_KEY } = process.env;
 
-sgMail.setApiKey(process.env.SENDGRID_KEY);
-
-const sendMail = async config => {
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: GMAIL_USER,
-      pass: GMAIL_PASS
-    }
-  });
-  return await sgMail.send(config);
-};
+sgMail.setApiKey(SENDGRID_KEY);
 
 const formatEmail = async (req, res) => {
   const { title, meal_desc, start } = req.body;
@@ -33,12 +22,10 @@ const formatEmail = async (req, res) => {
         : "Here's your meal reminder"
   };
   try {
-    const email = await sendMail(config);
-    if (email.message) console.log(email.error);
-    else return;
+    await sgMail.send(config);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
-module.exports = { formatEmail, sendMail };
+module.exports = { formatEmail };
