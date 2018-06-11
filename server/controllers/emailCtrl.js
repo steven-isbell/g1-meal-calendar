@@ -1,44 +1,41 @@
-const nodemailer = require("nodemailer");
-const moment = require("moment");
+const sgMail = require('@sendgrid/mail');
+const moment = require('moment');
 
-const { GMAIL_USER, GMAIL_PASS, MISSIONARY_EMAIL } = process.env;
+const { GMAIL_USER, GMAIL_PASS, MISSIONARY_EMAIL, SEND_GRID_KEY } = process.env;
 
-const sendMail = config => {
+sgMail.setApiKey(process.env.SENDGRID_KEY);
+
+const sendMail = async config => {
   let transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: {
       user: GMAIL_USER,
       pass: GMAIL_PASS
     }
   });
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(config, (error, info) => {
-      if (error) reject({ error });
-      else resolve({ message: "Success!" });
-    });
-  });
+  return await sgMail.send(config);
 };
 
 const formatEmail = async (req, res) => {
   const { title, meal_desc, start } = req.body;
   const config = {
-    from: "Steven Isbell <steven.isbell18@gmail.com>",
+    from: 'Steven Isbell <steven.isbell18@gmail.com>',
     to: MISSIONARY_EMAIL,
     subject:
-      req.originalUrl === "/api/events" ? "New Meal Signup" : "Meal Reminder",
+      req.originalUrl === '/api/events' ? 'New Meal Signup' : 'Meal Reminder',
     text:
-      req.originalUrl === "/api/events"
+      req.originalUrl === '/api/events'
         ? `${title} signed up to feed you on ${moment(start).format(
-            "MM-DD-YYYY"
+            'MM-DD-YYYY'
           )} with these instructions: ${
-            meal_desc ? meal_desc : "no instructions left"
+            meal_desc ? meal_desc : 'no instructions left'
           }`
         : "Here's your meal reminder"
   };
   try {
     const email = await sendMail(config);
-    if (email.message) return email.message;
-    else return console.log(email.error);
+    if (email.message) console.log(email.error);
+    else return;
   } catch (e) {
     console.log(e);
   }
