@@ -13,7 +13,6 @@ const EditCompActions = ({
     primary={true}
     onClick={() =>
       handleChildState({
-        editEvent: !editEvent,
         edit: !edit,
         selectedEvent: {}
       })
