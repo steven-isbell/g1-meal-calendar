@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import moment from 'moment';
@@ -62,5 +63,16 @@ const InputDialog = ({
     </InputContainer>
   </Dialog>
 );
+
+InputDialog.propTypes = {
+  edit: PropTypes.bool,
+  open: PropTypes.bool,
+  editEvent: PropTypes.bool,
+  selectedDate: PropTypes.object,
+  handleChildState: PropTypes.func.isRequired,
+  handleEventEdit: PropTypes.func.isRequired,
+  handleEventSubmit: PropTypes.func.isRequired,
+  aux: PropTypes.number
+};
 
 export default InputDialog;

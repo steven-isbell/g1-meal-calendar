@@ -84,11 +84,11 @@ const MealInfoDialog = ({
 );
 
 MealInfoDialog.propTypes = {
+  handleChildState: PropTypes.func.isRequired,
   selectedEvent: PropTypes.object,
   aux: PropTypes.number,
   authenticated: PropTypes.bool,
   editEvent: PropTypes.bool,
-  handleChildState: PropTypes.func.isRequired,
   edit: PropTypes.bool,
   cancellation: PropTypes.bool
 };

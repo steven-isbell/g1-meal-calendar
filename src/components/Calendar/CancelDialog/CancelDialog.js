@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import Dialog from 'material-ui/Dialog';
 
@@ -43,5 +44,13 @@ const CancelDialog = ({
     )}
   </Dialog>
 );
+
+CancelDialog.propTypes = {
+  cancellation: PropTypes.bool,
+  aux: PropTypes.number,
+  selectedEvent: PropTypes.object,
+  handleEventCancel: PropTypes.func.isRequired,
+  handleChildState: PropTypes.func.isRequired
+};
 
 export default CancelDialog;
