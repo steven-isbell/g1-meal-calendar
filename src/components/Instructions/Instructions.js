@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 import { standardLegend, authedLegend } from './legend';
 import { ListTitle, ListItem, FlexedContainer } from '../../styledComponents';
@@ -20,6 +21,10 @@ const Instructions = ({ isAuthenticated }) => {
       <ul id="instructions">{mapped}</ul>
     </FlexedContainer>
   );
+};
+
+Instructions.propTypes = {
+  isAuthenticated: PropTypes.bool
 };
 
 export default Instructions;

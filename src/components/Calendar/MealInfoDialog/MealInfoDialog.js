@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import moment from 'moment';
@@ -81,5 +82,15 @@ const MealInfoDialog = ({
     )}
   </Dialog>
 );
+
+MealInfoDialog.propTypes = {
+  selectedEvent: PropTypes.object,
+  aux: PropTypes.number,
+  authenticated: PropTypes.bool,
+  editEvent: PropTypes.bool,
+  handleChildState: PropTypes.func.isRequired,
+  edit: PropTypes.bool,
+  cancellation: PropTypes.bool
+};
 
 export default MealInfoDialog;
