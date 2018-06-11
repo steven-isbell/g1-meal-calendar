@@ -94,10 +94,12 @@ class Calendar extends Component {
   };
 
   handleEventSubmit = async () => {
-    const title = document.getElementById('title-input').value;
-    const meal_desc = document.getElementById('desc-input').value;
-    const { start, end } = this.state.selectedDate;
-    const { aux } = this.state;
+    const {
+      meal_title: title,
+      desc: meal_desc,
+      selectedDate: { start, end },
+      aux
+    } = this.state;
     const { data: events } = await axios.post('/api/events', {
       title,
       meal_desc,
