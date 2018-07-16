@@ -3,6 +3,7 @@ import axios from 'axios';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import Snackbar from 'material-ui/Snackbar';
+import FlatButton from 'material-ui/FlatButton';
 
 import Instructions from '../Instructions/Instructions';
 import AuxSelect from './AuxSelect/AuxSelect';
@@ -33,7 +34,7 @@ class Calendar extends Component {
       openSnack: false,
       cancellation: false,
       authenticated: false,
-      pass: '',
+      enterAuth: false,
       meal_title: '',
       desc: '',
       snackMessage: '',
@@ -166,8 +167,8 @@ class Calendar extends Component {
       cancellation,
       aux,
       authenticated,
-      pass,
-      selectedDate
+      selectedDate,
+      enterAuth
     } = this.state;
     return (
       <Fragment>
@@ -175,15 +176,23 @@ class Calendar extends Component {
           <Title>G1 Calendar</Title>
           <FlexedContainer id="break">
             <AuxSelect
-              authenticated={authenticated}
               handleAuxChange={this.handleAuxChange}
               aux={aux}
-            />
-            <AuthInput
-              pass={pass}
-              handleChildState={this.handleChildState}
               authenticated={authenticated}
             />
+            {enterAuth && (
+              <AuthInput
+                authenticated={authenticated}
+                handleChildState={this.handleChildState}
+              />
+            )}
+            {!enterAuth && (
+              <FlatButton
+                label="Admin"
+                primary={true}
+                onClick={() => this.setState({ enterAuth: !enterAuth })}
+              />
+            )}
           </FlexedContainer>
         </div>
         <CalendarContainer>

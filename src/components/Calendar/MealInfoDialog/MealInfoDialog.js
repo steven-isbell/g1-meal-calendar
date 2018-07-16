@@ -24,7 +24,7 @@ const MealInfoDialog = ({
         : 'Activity Information'
     }
     actions={
-      aux === 5 || authenticated ? (
+      aux === 5 || aux === 6 || authenticated ? (
         <EditActions
           cancellation={cancellation}
           handleChildState={handleChildState}
