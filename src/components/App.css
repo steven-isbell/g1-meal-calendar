@@ -136,24 +136,4 @@
   #break div {
     margin: 0 !important;
   }
-  #root
-    > div
-    > div.sc-bxivhb.fuKaak
-    > div
-    > div.rbc-time-view
-    > div.rbc-time-header.rbc-overflowing
-    > div:nth-child(2),
-  #root
-    > div
-    > div.sc-bxivhb.fuKaak
-    > div
-    > div.rbc-time-view
-    > div.rbc-time-header.rbc-overflowing
-    > div:nth-child(2)
-    > div.rbc-allday-cell
-    > div.rbc-row-content
-    > div:nth-child(1),
-  .rbc-row {
-    height: 100%;
-  }
 }
