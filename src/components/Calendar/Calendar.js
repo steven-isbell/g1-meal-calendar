@@ -45,12 +45,25 @@ class Calendar extends Component {
   async componentDidMount() {
     const buttons = document.querySelectorAll('.rbc-btn-group');
     const buttonsToRemove = buttons[1].childNodes;
-    buttonsToRemove.forEach(
-      (button, idx) =>
-        idx
-          ? (button.style.display = 'none')
-          : (button.style.borderRadius = '5px')
-    );
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    ) {
+      buttonsToRemove.forEach(
+        (button, idx) =>
+          !idx || idx === 2
+            ? (button.style.borderRadius = '5px')
+            : (button.style.display = 'none')
+      );
+    } else {
+      buttonsToRemove.forEach(
+        (button, idx) =>
+          idx
+            ? (button.style.display = 'none')
+            : (button.style.borderRadius = '5px')
+      );
+    }
     buttons[0].childNodes[0].click();
     buttons[0].childNodes[1].innerText = 'prev';
     try {

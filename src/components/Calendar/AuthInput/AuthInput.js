@@ -13,7 +13,6 @@ class AuthInput extends Component {
     }
   };
   render() {
-    console.log(this.passInput);
     const { authenticated } = this.props;
     return !authenticated ? (
       <Fragment>
