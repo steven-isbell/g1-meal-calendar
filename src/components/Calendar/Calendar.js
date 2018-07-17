@@ -11,6 +11,8 @@ import AuthInput from './AuthInput/AuthInput';
 import MealInfoDialog from './MealInfoDialog/MealInfoDialog';
 import InputDialog from './InputDialog/InputDialog';
 import CancelDialog from './CancelDialog/CancelDialog';
+import Modal from '../Modal/Modal';
+import ErrorComponent from '../ErrorBoundary/Error';
 
 import {
   Title,
@@ -35,6 +37,7 @@ class Calendar extends Component {
       cancellation: false,
       authenticated: false,
       enterAuth: false,
+      didErr: false,
       meal_title: '',
       desc: '',
       snackMessage: '',
@@ -70,7 +73,8 @@ class Calendar extends Component {
       const { data: events } = await axios('/api/events/5');
       this.setState({ events });
     } catch (err) {
-      console.error(err);
+      console.log(err);
+      this.setState({ didErr: true });
     }
   }
 
@@ -139,17 +143,18 @@ class Calendar extends Component {
       });
       return;
     }
+    if (this.state.aux !== 6) {
+      const exists = this.state.events.findIndex(event =>
+        moment(info.end).isSame(moment(event.start))
+      );
 
-    const exists = this.state.events.findIndex(event =>
-      moment(info.end).isSame(moment(event.start))
-    );
-
-    if (exists !== -1) {
-      this.setState({
-        openSnack: true,
-        snackMessage: 'Date Taken. Please Choose Another.'
-      });
-      return;
+      if (exists !== -1) {
+        this.setState({
+          openSnack: true,
+          snackMessage: 'Date Taken. Please Choose Another.'
+        });
+        return;
+      }
     }
     return true;
   };
@@ -181,7 +186,8 @@ class Calendar extends Component {
       aux,
       authenticated,
       selectedDate,
-      enterAuth
+      enterAuth,
+      didErr
     } = this.state;
     return (
       <Fragment>
@@ -257,6 +263,22 @@ class Calendar extends Component {
           onRequestClose={() => this.setState({ openSnack: !openSnack })}
         />
         <Instructions isAuthenticated={authenticated} />
+        {didErr && (
+          <Modal>
+            <div
+              style={{
+                height: '100vh',
+                width: '100vw',
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                zIndex: '100'
+              }}
+            >
+              <ErrorComponent />
+            </div>
+          </Modal>
+        )}
       </Fragment>
     );
   }

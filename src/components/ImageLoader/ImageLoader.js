@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import preload from "../../assets/preload.png";
+import preload from '../../assets/preload.png';
 
 class ImageLoader extends Component {
   constructor(props) {
     super(props);
+
     this.staticImg = null;
   }
 
@@ -16,10 +17,10 @@ class ImageLoader extends Component {
 
     hdLoaderImg.onload = () => {
       this.staticImg.setAttribute(
-        "style",
+        'style',
         `background-image: url('${this.props.srcLoaded}')`
       );
-      this.staticImg.classList.add("iron-image-fade-in");
+      this.staticImg.classList.add('iron-image-fade-in');
     };
   }
 

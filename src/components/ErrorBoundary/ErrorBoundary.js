@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import ErrorBoundaryFallbackComponent from "./Error";
+import ErrorBoundaryFallbackComponent from './Error';
 
 class ErrorBoundary extends Component {
   static defaultProps = {
@@ -16,10 +16,12 @@ class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     const { onError } = this.props;
 
-    if (typeof onError === "function") {
+    if (typeof onError === 'function') {
       try {
-        onError.call(this, error, info ? info.componentStack : "");
-      } catch (ignoredError) {}
+        onError.call(this, error, info ? info.componentStack : '');
+      } catch (ignoredError) {
+        console.error(ignoredError);
+      }
     }
 
     this.setState({ error, info });
@@ -32,7 +34,7 @@ class ErrorBoundary extends Component {
     if (error !== null) {
       return (
         <FallbackComponent
-          componentStack={info ? info.componentStack : ""}
+          componentStack={info ? info.componentStack : ''}
           error={error}
         />
       );

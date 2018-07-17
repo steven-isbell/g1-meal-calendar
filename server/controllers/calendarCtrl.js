@@ -16,7 +16,7 @@ const getEvents = async (req, res) => {
 
     res.status(200).json(formattedData);
   } catch (e) {
-    console.error(e);
+    res.status(500).json(e);
   }
 };
 
@@ -37,7 +37,7 @@ const getEventsByID = async (req, res) => {
     }));
     res.status(200).json(formattedData);
   } catch (e) {
-    console.error(e);
+    res.status(500).json(e);
   }
 };
 
